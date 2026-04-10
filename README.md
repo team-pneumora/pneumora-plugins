@@ -1,112 +1,112 @@
 # pneumora-plugins
 
-> Claude Code 플러그인 모음 — [Pneumora](https://github.com/team-pneumora)에서 운영하는 공식 마켓플레이스
+> Claude Code plugin collection — the official marketplace maintained by [Pneumora](https://github.com/team-pneumora)
 
-Claude Code CLI의 [플러그인 마켓플레이스](https://docs.claude.com/en/docs/claude-code/plugins) 형식으로 배포되며, 한 번 등록하면 여기 있는 모든 플러그인을 손쉽게 설치할 수 있습니다.
+A [Claude Code plugin marketplace](https://docs.claude.com/en/docs/claude-code/plugins) that bundles Pneumora's productivity plugins. Register the marketplace once and you can install any plugin listed here with a single command.
 
 ---
 
-## 빠른 설치
+## Quick Install
 
-### 1. 마켓플레이스 등록
+### 1. Register the marketplace
 
-Claude Code CLI에서 한 번만 실행하면 됩니다:
+Run this once in Claude Code CLI:
 
 ```bash
 claude plugin marketplace add team-pneumora/pneumora-plugins
 ```
 
-### 2. 플러그인 설치
+### 2. Install a plugin
 
 ```bash
 claude plugin install <plugin-name>@pneumora-plugins
 ```
 
-예시:
+Example:
 
 ```bash
 claude plugin install claude-md-harness@pneumora-plugins
 ```
 
-설치 후 Claude Code를 재시작하면 스킬이 자동으로 로드됩니다.
+Restart Claude Code after installation and the skill will load automatically.
 
 ---
 
-## 수록된 플러그인
+## Available Plugins
 
-| 플러그인 | 설명 |
-|---------|-----|
-| [`claude-md-harness`](./claude-md-harness) | CLAUDE.md를 OOP 상속 구조(Root → Module → Leaf)로 계층 분산시키는 스킬 |
+| Plugin | Description |
+|--------|-------------|
+| [`claude-md-harness`](./claude-md-harness) | Distribute `CLAUDE.md` across your project in an OOP inheritance model (Root → Module → Leaf) |
 
-> 새 플러그인이 추가되면 이 테이블도 같이 업데이트됩니다.
+> This table is updated whenever a new plugin is added.
 
 ---
 
-## 마켓플레이스 구조
+## Marketplace Layout
 
-이 저장소는 Claude Code 멀티-플러그인 마켓플레이스 규격을 따릅니다:
+This repository follows the Claude Code multi-plugin marketplace spec:
 
 ```
 pneumora-plugins/
 ├── .claude-plugin/
-│   └── marketplace.json          # 마켓플레이스 메타데이터 + 플러그인 목록
-├── claude-md-harness/             # 플러그인 1
+│   └── marketplace.json          # Marketplace metadata + plugin registry
+├── claude-md-harness/             # Plugin 1
 │   ├── .claude-plugin/
-│   │   └── plugin.json            # 플러그인 메타데이터
+│   │   └── plugin.json            # Plugin metadata
 │   ├── skills/
 │   │   └── claude-md-harness/
-│   │       └── SKILL.md           # 자동 트리거되는 스킬 본체
+│   │       └── SKILL.md           # Auto-triggered skill body
 │   └── README.md
 ├── scripts/
-│   └── new-plugin.sh              # 새 플러그인 스캐폴딩 스크립트
-└── README.md                      # ← 이 파일
+│   └── new-plugin.sh              # Scaffolding script for new plugins
+└── README.md                      # ← this file
 ```
 
-각 플러그인은 독립적인 디렉토리를 가지며, 내부에 `.claude-plugin/plugin.json`과 `skills/<name>/SKILL.md`를 둡니다.
+Each plugin lives in its own directory with a local `.claude-plugin/plugin.json` and `skills/<name>/SKILL.md`.
 
 ---
 
-## 새 플러그인 추가하기 (기여자용)
+## Adding a New Plugin (Contributors)
 
-저장소 루트에서 스캐폴딩 스크립트를 실행하면 필요한 파일들이 자동 생성되고 `marketplace.json`에도 등록됩니다.
+Run the scaffolding script from the repository root. It creates the required files and registers the plugin in `marketplace.json` automatically.
 
 ```bash
-bash scripts/new-plugin.sh <plugin-name> "플러그인 한 줄 설명"
+bash scripts/new-plugin.sh <plugin-name> "One-line plugin description"
 ```
 
-예시:
+Example:
 
 ```bash
-bash scripts/new-plugin.sh my-cool-skill "내 멋진 스킬에 대한 설명"
+bash scripts/new-plugin.sh my-cool-skill "Description of my cool skill"
 ```
 
-실행 후:
+After running:
 
-1. `<plugin-name>/skills/<plugin-name>/SKILL.md` 의 TODO 항목을 실제 스킬 내용으로 채웁니다
-2. `<plugin-name>/README.md` 를 업데이트합니다
-3. 루트 `README.md` 의 "수록된 플러그인" 테이블에 새 항목을 추가합니다
-4. 커밋 & 푸시
+1. Fill in the `TODO` sections in `<plugin-name>/skills/<plugin-name>/SKILL.md` with the actual skill content
+2. Update `<plugin-name>/README.md`
+3. Add a row to the "Available Plugins" table in the root `README.md`
+4. Commit & push
 
-### 스크립트가 하는 일
+### What the script does
 
-- kebab-case 이름 검증
-- `<plugin-name>/.claude-plugin/plugin.json` 생성 (Pneumora 기본 메타데이터)
-- `<plugin-name>/skills/<plugin-name>/SKILL.md` 생성 (TODO 템플릿)
-- `<plugin-name>/README.md` 생성
-- `.claude-plugin/marketplace.json` 의 `plugins` 배열에 신규 항목 자동 등록
-- 중복 이름은 거부하고 에러 출력
-
----
-
-## 개발 원칙
-
-1. **스킬 트리거 description을 구체적으로 작성한다** — 자동 로드 정확도가 여기서 결정됩니다
-2. **DRY** — 상위에 있는 내용은 하위 플러그인/스킬에서 반복하지 않습니다
-3. **의미 있는 버전 관리** — `plugin.json` 의 `version` 은 semver를 따릅니다
-4. **한국어 문서 우선, 영어 코드** — Pneumora 전체 규칙과 일치
+- Validates the plugin name (kebab-case)
+- Creates `<plugin-name>/.claude-plugin/plugin.json` with default Pneumora metadata
+- Creates `<plugin-name>/skills/<plugin-name>/SKILL.md` from a TODO template
+- Creates `<plugin-name>/README.md`
+- Appends the new entry to `.claude-plugin/marketplace.json`
+- Rejects duplicate plugin names with a clear error
 
 ---
 
-## 라이선스
+## Development Principles
+
+1. **Write specific skill trigger descriptions** — auto-load accuracy depends on this
+2. **DRY** — don't repeat in sub-plugins what's already stated at a higher level
+3. **Meaningful versioning** — `version` in `plugin.json` follows semver
+4. **Korean docs first, English code** — consistent with Pneumora's overall conventions
+
+---
+
+## License
 
 MIT © [Pneumora](https://github.com/team-pneumora)
