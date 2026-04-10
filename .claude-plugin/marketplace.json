@@ -1,0 +1,13 @@
+{
+  "name": "pneumora-plugins",
+  "owner": {
+    "name": "Pneumora"
+  },
+  "plugins": [
+    {
+      "name": "claude-md-harness",
+      "source": "./claude-md-harness",
+      "description": "CLAUDE.md 하네스 구조화"
+    }
+  ]
+}

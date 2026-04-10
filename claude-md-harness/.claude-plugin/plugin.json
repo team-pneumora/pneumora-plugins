@@ -1,0 +1,9 @@
+{
+  "name": "claude-md-harness",
+  "description": "CLAUDE.md를 객체지향 하네스 구조로 분산시키는 플러그인. OOP 상속 모델처럼 Root → Module → Leaf로 계층화합니다.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Pneumora"
+  },
+  "repository": "https://github.com/team-pneumora/pneumora-plugins"
+}
