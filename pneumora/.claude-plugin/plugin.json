@@ -1,0 +1,9 @@
+{
+  "name": "pneumora",
+  "description": "의도적 기억과 회귀 방지를 위한 워크플로우 도구 모음. CRITICAL 섹션 관리, 회귀 이력 추적, 배포 전 체크, 코드베이스 탐색 전담 서브에이전트를 제공합니다.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pneumora"
+  },
+  "repository": "https://github.com/team-pneumora/pneumora-plugins"
+}

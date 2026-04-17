@@ -8,6 +8,11 @@
       "name": "claude-md-harness",
       "source": "./claude-md-harness",
       "description": "CLAUDE.md 하네스 구조화"
+    },
+    {
+      "name": "pneumora",
+      "source": "./pneumora",
+      "description": "의도적 기억과 회귀 방지 워크플로우 (CRITICAL, 회귀 이력, 배포 가드, 탐색 서브에이전트)"
     }
   ]
 }
