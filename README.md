@@ -37,6 +37,8 @@ Restart Claude Code after installation and the skill will load automatically.
 | Plugin | Description |
 |--------|-------------|
 | [`claude-md-harness`](./claude-md-harness) | Distribute `CLAUDE.md` across your project in an OOP inheritance model (Root → Module → Leaf) |
+| [`pneumora`](./pneumora) | Intentional memory & regression-prevention workflow — CRITICAL section, regression log, deploy guard, exploration subagent |
+| [`ceo-dev-loop`](./ceo-dev-loop) | Two-agent automation loop — main session codes, CEO subagent reviews/decides/approves at every checkpoint until the goal is met |
 
 > This table is updated whenever a new plugin is added.
 

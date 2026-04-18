@@ -13,6 +13,11 @@
       "name": "pneumora",
       "source": "./pneumora",
       "description": "의도적 기억과 회귀 방지 워크플로우 (CRITICAL, 회귀 이력, 배포 가드, 탐색 서브에이전트)"
+    },
+    {
+      "name": "ceo-dev-loop",
+      "source": "./ceo-dev-loop",
+      "description": "CEO-Dev 2-에이전트 자동화 루프. 메인 세션이 개발, CEO 서브에이전트가 체크포인트마다 검토·결정·승인하며 목표 달성까지 자동 반복."
     }
   ]
 }
