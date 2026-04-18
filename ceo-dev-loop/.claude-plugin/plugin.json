@@ -1,7 +1,7 @@
 {
   "name": "ceo-dev-loop",
   "description": "CEO-Dev 2-에이전트 자동화 루프. 메인 세션이 코드를 작성하고, CEO 서브에이전트가 체크포인트마다 검토·결정·승인하며 목표 달성까지 자동 반복합니다.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Pneumora"
   },

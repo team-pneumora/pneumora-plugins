@@ -1,5 +1,7 @@
 # ceo-dev-loop
 
+> **v0.3.0** — 목표 고수 강제 + 컨텍스트 리프레시 절차 추가
+
 Claude Code 안에서 돌아가는 **CEO-Dev 2-에이전트 자동화 루프** 플러그인.
 
 메인 세션이 Dev 역할로 코드를 작성하고, 체크포인트마다 CEO 서브에이전트(Sonnet, Read-only)가 검토·결정·승인합니다. 목표 달성까지 자동 반복되며, Max 구독 안에서 동작해 추가 API 비용이 없습니다.
@@ -85,3 +87,41 @@ claude
 - `Dev=Opus / CEO=Sonnet` (기본) — 깊은 코딩 + 빠른 리뷰, Opus 쿼터 절약
 - `Dev=Sonnet / CEO=Opus` — 빠른 코딩 + 신중한 리뷰
 - `Dev=Opus / CEO=Haiku` — 최대 속도·최저 비용, 판단 품질은 낮아짐
+
+## 컨텍스트 관리 (v0.3.0)
+
+자율 루프는 메인 Dev 세션 컨텍스트가 누적된다는 약점이 있습니다. 이를 다음 4단계로 방어합니다.
+
+1. **CEO 가 매번 fresh 로 GOAL/STATUS/DECISIONS 재독** — 서브에이전트라 매 호출 fresh, 목표 drift 차단
+2. **CEO 응답에 `[컨텍스트]` 신호** — milestone 완료 직후, 5턴 이상 누적, 안전 시점에 `[COMPACT]` (필요 시 `[CLEAR]`)
+3. **STATUS.md `## 활성 컨텍스트` 섹션** — 컴팩트/클리어 후 재시작이 가능한 수준의 메모. 현재 만지는 파일·미해결 결정·다음 첫 단계
+4. **턴 카운터** — `STATUS.md` 에 `마지막 컴팩트 이후 N 턴` 누적, `/ceo-dev-loop:status` 가 5 이상이면 경고 표시
+
+리프레시 절차 (CLAUDE.md 에 자동 주입):
+1. STATUS.md `활성 컨텍스트` 보강 → 2. DECISIONS.md 누적 → 3. (선택) `docs/checkpoints/NN-{slug}.md` 스냅샷 → 4. `/compact` 또는 `/clear` → 5. 재진입 후 GOAL → STATUS → DECISIONS 다시 읽고 카운터 리셋
+
+## 목표 고수 (v0.3.0)
+
+CEO 응답 형식이 강화되었습니다:
+- 첫 줄에 `[목표 진척] N/M` 강제 — drift 방지
+- DONE 판정은 GOAL.md `## 완료 기준 (DoD)` 항목을 **하나씩 인용해 체크**한 뒤에만
+- 같은 작업 2회 연속 실패 시 접근 변경 또는 사용자 확인 강제
+- 같은 방향 3턴 이상 진척 없으면 CEO 자가 점검 ("내가 목표를 잘못 이해했나?")
+- Dev 지시는 항상 파일/함수 단위 + 검증 명령 동봉
+
+## Changelog
+
+### v0.3.0
+- `[COMPACT]/[CLEAR]` 컨텍스트 신호 + 리프레시 절차
+- STATUS.md 에 `활성 컨텍스트` / 턴 카운터 추가
+- CEO 응답에 `[목표 진척] N/M` 강제, DoD 인용 체크 의무화
+- Dev orchestration 구체화 (파일/함수 단위, 검증 명령, 작업 단위 크기 제어, 2회 실패 처리)
+- CEO 자가 점검 규칙 추가
+- `/ceo-dev-loop:status` 가 활성 컨텍스트와 턴 카운터 노출
+
+### v0.2.0
+- brownfield 자동 감지 + 프로젝트 스캔 (스택/모듈/빌드 명령)
+- GOAL.md `현재 프로젝트 맥락` 섹션 자동 채움
+
+### v0.1.0
+- 초기 릴리즈: CEO/Dev 2-에이전트 루프, init/start/status 명령
