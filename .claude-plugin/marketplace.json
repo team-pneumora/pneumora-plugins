@@ -17,7 +17,7 @@
     {
       "name": "ceo-dev-loop",
       "source": "./ceo-dev-loop",
-      "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.3.3). 메인 세션이 개발, CEO 서브에이전트가 검토·결정·승인하며 목표 달성까지 자동 반복. 목표 고수 + 컨텍스트 리프레시 + GOAL.md 완전성 검증(phase 프로젝트) + 단순 목표 프로젝트는 가볍게."
+      "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.4.0). init 단계에서 CEO 가 GOAL 분해까지 위임받아 끝낸 뒤 즉시 자율 루프 시작. 사용자 승인 0회 default. 진행 중 프로젝트는 ROADMAP/ADR/PHASE_* 등 자동 흡수해서 합류."
     }
   ]
 }
