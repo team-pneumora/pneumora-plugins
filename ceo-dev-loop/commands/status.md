@@ -7,7 +7,7 @@ description: 현재 프로젝트의 루프 진행 상태와 결정 로그를 요
 
 ```
 📋 프로젝트: (GOAL.md 첫 줄)
-🔁 ceo-dev-loop v0.4.1
+🔁 ceo-dev-loop v0.4.2
 
 ✅ 완료된 요구사항: N / M 개
    - [x] ...

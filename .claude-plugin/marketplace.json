@@ -17,7 +17,7 @@
     {
       "name": "ceo-dev-loop",
       "source": "./ceo-dev-loop",
-      "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.4.1). init 단계에서 CEO 가 GOAL 분해까지 위임받아 끝낸 뒤 즉시 자율 루프 시작. 사용자 승인 0회 default. CEO 권한 범위 분리(인프라 판단 금지) + 세션 종료/재진입 우회 어휘 차단."
+      "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.4.2). init 단계에서 CEO 가 GOAL 분해까지 위임받아 끝낸 뒤 즉시 자율 루프 시작. 사용자 의사결정 0회 default. /compact 트리거는 사용자 입력 1회 필요(인프라 조작) 후 같은 세션 자동 재개."
     }
   ]
 }
