@@ -18,6 +18,26 @@
       "name": "ceo-dev-loop",
       "source": "./ceo-dev-loop",
       "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.4.2). init 단계에서 CEO 가 GOAL 분해까지 위임받아 끝낸 뒤 즉시 자율 루프 시작. 사용자 의사결정 0회 default. /compact 트리거는 사용자 입력 1회 필요(인프라 조작) 후 같은 세션 자동 재개."
+    },
+    {
+      "name": "dev-discipline",
+      "source": "./dev-discipline",
+      "description": "TDD red-green-refactor + 코드베이스 아키텍처 디시플린 + 마이크로커밋 리팩터 플랜"
+    },
+    {
+      "name": "domain-language",
+      "source": "./domain-language",
+      "description": "DDD ubiquitous language 용어집 + domain model 인터뷰 + grill + zoom-out"
+    },
+    {
+      "name": "comm-modes",
+      "source": "./comm-modes",
+      "description": "출력 스타일 모드 (caveman 토큰 절감) + 새 skill 작성 메타-가이드"
+    },
+    {
+      "name": "gh-flow",
+      "source": "./gh-flow",
+      "description": "GitHub issue 기반 PRD/issues/triage 워크플로 (to-prd, to-issues, triage-issue, github-triage, qa-to-issue)"
     }
   ]
 }

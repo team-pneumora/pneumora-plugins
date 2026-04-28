@@ -1,0 +1,92 @@
+{
+  "name": "pneumora-plugins",
+  "interface": {
+    "displayName": "Pneumora Plugins"
+  },
+  "plugins": [
+    {
+      "name": "claude-md-harness",
+      "source": {
+        "source": "local",
+        "path": "./claude-md-harness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "pneumora",
+      "source": {
+        "source": "local",
+        "path": "./pneumora"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "ceo-dev-loop",
+      "source": {
+        "source": "local",
+        "path": "./ceo-dev-loop"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    },
+    {
+      "name": "dev-discipline",
+      "source": {
+        "source": "local",
+        "path": "./dev-discipline"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "domain-language",
+      "source": {
+        "source": "local",
+        "path": "./domain-language"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "comm-modes",
+      "source": {
+        "source": "local",
+        "path": "./comm-modes"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "gh-flow",
+      "source": {
+        "source": "local",
+        "path": "./gh-flow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
