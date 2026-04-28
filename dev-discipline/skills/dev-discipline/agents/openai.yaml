@@ -1,0 +1,7 @@
+interface:
+  display_name: "dev-discipline"
+  short_description: "TDD red-green-refactor + 코드베이스 아키텍처 디시플린 + 마이크로커밋 리팩터 플랜"
+  default_prompt: "Use $dev-discipline to help with this project."
+
+policy:
+  allow_implicit_invocation: true

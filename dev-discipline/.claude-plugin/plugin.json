@@ -1,0 +1,9 @@
+{
+  "name": "dev-discipline",
+  "description": "TDD red-green-refactor (vertical slice), 코드베이스 아키텍처 deepening, 마이크로커밋 리팩터 플랜 (로컬 REFACTOR-PLAN.md). mattpocock/skills 적응 (MIT).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pneumora"
+  },
+  "repository": "https://github.com/team-pneumora/pneumora-plugins"
+}

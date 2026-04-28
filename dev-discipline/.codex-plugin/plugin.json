@@ -1,0 +1,38 @@
+{
+  "name": "dev-discipline",
+  "version": "0.1.0",
+  "description": "TDD red-green-refactor with vertical slices, codebase architecture deepening, and Martin-Fowler-style micro-commit refactor planning. Adapted from mattpocock/skills.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/dev-discipline",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "tdd",
+    "architecture",
+    "refactor",
+    "discipline"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dev Discipline",
+    "shortDescription": "TDD + architecture deepening + micro-commit refactor planning.",
+    "longDescription": "Three opinionated engineering disciplines bundled together: TDD with vertical-slice tracer bullets (no horizontal slicing), architecture review focused on deepening shallow modules using domain language, and refactor RFC drafting where each step leaves the codebase working. Adapted from Matt Pocock's skills repository (MIT) with Korean trigger keywords and a local-first refactor-plan variant that writes REFACTOR-PLAN.md instead of opening a GitHub issue.",
+    "developerName": "Pneumora",
+    "category": "Coding",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $dev-discipline to start a TDD red-green-refactor cycle for this feature.",
+      "Use $dev-discipline to find architecture deepening opportunities in this codebase.",
+      "Use $dev-discipline to draft a micro-commit refactor plan as REFACTOR-PLAN.md."
+    ]
+  }
+}
