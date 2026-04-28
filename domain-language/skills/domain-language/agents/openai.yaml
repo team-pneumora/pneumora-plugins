@@ -1,0 +1,7 @@
+interface:
+  display_name: "domain-language"
+  short_description: "DDD ubiquitous language 용어집 + domain model 인터뷰 + grill + zoom-out"
+  default_prompt: "Use $domain-language to help with this project."
+
+policy:
+  allow_implicit_invocation: true

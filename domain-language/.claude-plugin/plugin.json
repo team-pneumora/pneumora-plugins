@@ -1,0 +1,9 @@
+{
+  "name": "domain-language",
+  "description": "DDD ubiquitous language 용어집 + domain-model 인터뷰(CONTEXT.md/ADR 인라인 갱신) + grill-me + zoom-out. mattpocock/skills 적응 (MIT).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pneumora"
+  },
+  "repository": "https://github.com/team-pneumora/pneumora-plugins"
+}

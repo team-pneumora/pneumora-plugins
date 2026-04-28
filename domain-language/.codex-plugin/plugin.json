@@ -1,0 +1,38 @@
+{
+  "name": "domain-language",
+  "version": "0.1.0",
+  "description": "DDD ubiquitous language glossary, domain-model interview that updates CONTEXT.md/ADRs inline, plan grilling, and a one-line zoom-out. Adapted from mattpocock/skills.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/domain-language",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "ddd",
+    "ubiquitous-language",
+    "domain-model",
+    "adr"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Domain Language",
+    "shortDescription": "DDD ubiquitous language + domain model interview + grilling.",
+    "longDescription": "Bundle of four DDD-leaning skills: extract a ubiquitous language glossary from conversation into UBIQUITOUS_LANGUAGE.md, run a grilling interview that sharpens terminology and updates CONTEXT.md/docs/adr inline as decisions crystallise, run plain plan-grilling without domain coupling, and a one-line zoom-out for unfamiliar code areas. Adapted from Matt Pocock's skills repository (MIT) with Korean trigger keywords.",
+    "developerName": "Pneumora",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $domain-language to extract a ubiquitous language glossary from this conversation into UBIQUITOUS_LANGUAGE.md.",
+      "Use $domain-language to grill this plan against the existing domain model and update CONTEXT.md inline.",
+      "Use $domain-language to give me a higher-level map of the modules involved in this code area."
+    ]
+  }
+}
