@@ -1,0 +1,7 @@
+interface:
+  display_name: "gh-flow"
+  short_description: "GitHub issue 기반 PRD/issues/triage 워크플로 (to-prd, to-issues, triage-issue, github-triage, qa-to-issue)"
+  default_prompt: "Use $gh-flow to help with this project."
+
+policy:
+  allow_implicit_invocation: true

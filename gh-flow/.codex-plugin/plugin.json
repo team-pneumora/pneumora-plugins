@@ -1,0 +1,39 @@
+{
+  "name": "gh-flow",
+  "version": "0.1.0",
+  "description": "GitHub issue-driven workflow — PRD synthesis, plan-to-vertical-slice issues, bug triage with TDD fix plans, label-based state-machine triage, and conversational QA-to-issues. Requires GitHub remote and gh CLI. Adapted from mattpocock/skills.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/gh-flow",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "github",
+    "issues",
+    "prd",
+    "triage"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "GH Flow",
+    "shortDescription": "PRD/issues/triage workflow on GitHub. Requires gh CLI.",
+    "longDescription": "Five Matt Pocock skills bundled into a GitHub-issue-driven workflow: synthesize a PRD from current context (to-prd), break a plan into independently-grabbable vertical-slice issues (to-issues), triage a bug with codebase exploration and a TDD fix plan (triage-issue), label-based state-machine triage with agent-brief comments (github-triage), and a conversational QA session that files durable issues using the project's domain language (qa-to-issue, renamed from upstream qa to avoid clashing with the user's global /qa). All sub-skills check git remote -v before running and refuse if there is no GitHub remote.",
+    "developerName": "Pneumora",
+    "category": "Coding",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Shell"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $gh-flow to turn this conversation into a PRD and file it as a GitHub issue.",
+      "Use $gh-flow to break this plan into vertical-slice GitHub issues with dependencies marked.",
+      "Use $gh-flow to triage this bug — find the root cause and file an issue with a TDD fix plan."
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "gh-flow",
+  "description": "GitHub issue 기반 워크플로 — PRD 합성, vertical-slice issue 분해, TDD 픽스 플랜 트리아지, 라벨 기반 state-machine 트리아지, 대화형 QA→issue. GitHub remote와 gh CLI 필요. mattpocock/skills 적응 (MIT).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pneumora"
+  },
+  "repository": "https://github.com/team-pneumora/pneumora-plugins"
+}
