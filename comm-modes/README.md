@@ -2,7 +2,17 @@
 
 > 출력 스타일 모드 + 새 skill 작성 메타-가이드
 
-[mattpocock/skills](https://github.com/mattpocock/skills) (MIT) 의 2개 skill을 Pneumora 컨벤션에 맞춰 적응.
+## 출처 (Source)
+
+이 플러그인은 [**mattpocock/skills**](https://github.com/mattpocock/skills) (MIT, [Matt Pocock](https://github.com/mattpocock)) 의 2개 skill을 Pneumora 컨벤션에 맞춰 적응한 derivative work 입니다.
+
+| Pneumora skill | 원본 |
+|---|---|
+| `caveman` | [mattpocock/skills/caveman](https://github.com/mattpocock/skills/tree/main/caveman) |
+| `write-a-skill` | [mattpocock/skills/write-a-skill](https://github.com/mattpocock/skills/tree/main/write-a-skill) |
+
+- **임포트 시점 commit**: [`90ea8ee`](https://github.com/mattpocock/skills/tree/90ea8ee) (2026-04-26)
+- **라이선스**: MIT (원본·적응본 동일)
 
 ## 설치
 

@@ -2,7 +2,19 @@
 
 > DDD 디시플린 묶음 — 용어집, 도메인 모델 인터뷰, plan grilling, zoom-out
 
-[mattpocock/skills](https://github.com/mattpocock/skills) (MIT) 의 4개 skill을 Pneumora 컨벤션에 맞춰 적응한 묶음.
+## 출처 (Source)
+
+이 플러그인은 [**mattpocock/skills**](https://github.com/mattpocock/skills) (MIT, [Matt Pocock](https://github.com/mattpocock)) 의 4개 skill을 Pneumora 컨벤션에 맞춰 적응한 derivative work 입니다.
+
+| Pneumora skill | 원본 |
+|---|---|
+| `ubiquitous-language` | [mattpocock/skills/ubiquitous-language](https://github.com/mattpocock/skills/tree/main/ubiquitous-language) |
+| `domain-model` | [mattpocock/skills/domain-model](https://github.com/mattpocock/skills/tree/main/domain-model) |
+| `grill-me` | [mattpocock/skills/grill-me](https://github.com/mattpocock/skills/tree/main/grill-me) |
+| `zoom-out` | [mattpocock/skills/zoom-out](https://github.com/mattpocock/skills/tree/main/zoom-out) |
+
+- **임포트 시점 commit**: [`90ea8ee`](https://github.com/mattpocock/skills/tree/90ea8ee) (2026-04-26)
+- **라이선스**: MIT (원본·적응본 동일)
 
 ## 설치
 

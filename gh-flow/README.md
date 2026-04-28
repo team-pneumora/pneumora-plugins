@@ -2,7 +2,20 @@
 
 > GitHub issue 기반 PRD / issues / triage / QA 워크플로
 
-[mattpocock/skills](https://github.com/mattpocock/skills) (MIT) 의 5개 GitHub-issue 워크플로 skill 묶음.
+## 출처 (Source)
+
+이 플러그인은 [**mattpocock/skills**](https://github.com/mattpocock/skills) (MIT, [Matt Pocock](https://github.com/mattpocock)) 의 5개 skill을 Pneumora 컨벤션에 맞춰 적응한 derivative work 입니다.
+
+| Pneumora skill | 원본 |
+|---|---|
+| `to-prd` | [mattpocock/skills/to-prd](https://github.com/mattpocock/skills/tree/main/to-prd) |
+| `to-issues` | [mattpocock/skills/to-issues](https://github.com/mattpocock/skills/tree/main/to-issues) |
+| `triage-issue` | [mattpocock/skills/triage-issue](https://github.com/mattpocock/skills/tree/main/triage-issue) |
+| `github-triage` | [mattpocock/skills/github-triage](https://github.com/mattpocock/skills/tree/main/github-triage) |
+| `qa-to-issue` | [mattpocock/skills/qa](https://github.com/mattpocock/skills/tree/main/qa) — **리네임됨** (글로벌 `/qa`와 충돌 회피) |
+
+- **임포트 시점 commit**: [`90ea8ee`](https://github.com/mattpocock/skills/tree/90ea8ee) (2026-04-26)
+- **라이선스**: MIT (원본·적응본 동일)
 
 ## 전제조건
 
