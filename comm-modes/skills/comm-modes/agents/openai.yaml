@@ -1,0 +1,7 @@
+interface:
+  display_name: "comm-modes"
+  short_description: "출력 스타일 모드 (caveman 토큰 절감) + 새 skill 작성 메타-가이드"
+  default_prompt: "Use $comm-modes to help with this project."
+
+policy:
+  allow_implicit_invocation: true

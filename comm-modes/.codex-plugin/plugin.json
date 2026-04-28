@@ -1,0 +1,36 @@
+{
+  "name": "comm-modes",
+  "version": "0.1.0",
+  "description": "Output-style modes (caveman ~75% token-saving terse mode) and skill-authoring meta-tools with Pneumora plugin conventions. Adapted from mattpocock/skills.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/comm-modes",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "caveman",
+    "skill-authoring",
+    "tokens"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Comm Modes",
+    "shortDescription": "Caveman terse mode + write-a-skill meta with Pneumora conventions.",
+    "longDescription": "Two skills focused on how the agent communicates and how new skills get authored. Caveman mode cuts ~75% tokens by stripping articles, fillers, and pleasantries while keeping technical accuracy; persists until the user says 'stop caveman'. Write-a-skill is a meta-skill that walks through authoring a new SKILL.md, with appended Pneumora conventions covering scripts/new-plugin.sh, dual manifests, and Codex agent metadata. Adapted from Matt Pocock's skills repository (MIT).",
+    "developerName": "Pneumora",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $comm-modes to switch to caveman mode and cut my response tokens.",
+      "Use $comm-modes to author a new skill following the Pneumora plugin conventions."
+    ]
+  }
+}

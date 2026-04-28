@@ -1,0 +1,9 @@
+{
+  "name": "comm-modes",
+  "description": "출력 스타일 모드 (caveman 토큰 75% 절감) + 새 skill 작성 메타-가이드(Pneumora 컨벤션 포함). mattpocock/skills 적응 (MIT).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pneumora"
+  },
+  "repository": "https://github.com/team-pneumora/pneumora-plugins"
+}
