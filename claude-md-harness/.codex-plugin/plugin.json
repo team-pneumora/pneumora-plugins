@@ -1,0 +1,36 @@
+{
+  "name": "claude-md-harness",
+  "version": "1.0.0",
+  "description": "Instruction-file harness for splitting CLAUDE.md or AGENTS.md into an OOP-style Root -> Module -> Leaf structure.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/claude-md-harness",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "agents-md",
+    "claude-md",
+    "instructions",
+    "harness"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Instruction Harness",
+    "shortDescription": "Split project instruction files by directory.",
+    "longDescription": "Structure project instruction files such as CLAUDE.md and AGENTS.md as a layered Root -> Module -> Leaf harness, keeping global rules high-level and directory-specific rules close to the code.",
+    "developerName": "Pneumora",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $claude-md-harness to structure this project's CLAUDE.md or AGENTS.md files."
+    ]
+  }
+}

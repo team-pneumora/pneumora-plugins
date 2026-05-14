@@ -1,0 +1,7 @@
+interface:
+  display_name: "CEO Dev Loop"
+  short_description: "Goal-driven autonomous coding loop."
+  default_prompt: "Use $ceo-dev-loop to initialize a GOAL/STATUS/DECISIONS workflow."
+
+policy:
+  allow_implicit_invocation: true

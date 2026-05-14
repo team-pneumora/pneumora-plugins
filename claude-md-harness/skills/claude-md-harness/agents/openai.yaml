@@ -1,0 +1,7 @@
+interface:
+  display_name: "Instruction Harness"
+  short_description: "Split instruction files by directory."
+  default_prompt: "Use $claude-md-harness to structure this project's CLAUDE.md or AGENTS.md files."
+
+policy:
+  allow_implicit_invocation: true

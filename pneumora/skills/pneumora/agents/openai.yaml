@@ -1,0 +1,7 @@
+interface:
+  display_name: "Pneumora"
+  short_description: "Project memory and regression guardrails."
+  default_prompt: "Use $pneumora to check project CRITICAL notes and regression history."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,39 @@
+{
+  "name": "pneumora",
+  "version": "0.1.0",
+  "description": "Intentional project memory and regression-prevention workflows for CRITICAL notes, regression logs, deploy checks, and safe codebase exploration.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/pneumora",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "memory",
+    "regression",
+    "deploy",
+    "critical"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Pneumora",
+    "shortDescription": "Project memory and regression guardrails.",
+    "longDescription": "Keep high-priority project notes, regression history, and deploy checks close to the repository so agents do not repeat known mistakes or push without re-reading critical context.",
+    "developerName": "Pneumora",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Shell"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $pneumora to show this project's CRITICAL notes and regression log.",
+      "Use $pneumora to record this regression in the project memory.",
+      "Use $pneumora to run a pre-push deploy context check."
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "ceo-dev-loop",
+  "version": "0.5.0",
+  "description": "Autonomous CEO-Dev workflow that uses GOAL, STATUS, and DECISIONS handoff files to keep implementation aligned with a project objective.",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/ceo-dev-loop",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "agent-loop",
+    "planning",
+    "goal",
+    "status"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "CEO Dev Loop",
+    "shortDescription": "Goal-driven autonomous coding loop.",
+    "longDescription": "Initialize and run a file-based CEO-Dev workflow where GOAL.md defines scope, STATUS.md tracks execution, and DECISIONS.md records direction changes until the objective is complete.",
+    "developerName": "Pneumora",
+    "category": "Coding",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Shell"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $ceo-dev-loop to initialize a GOAL/STATUS/DECISIONS workflow for this project.",
+      "Use $ceo-dev-loop to continue the current project loop.",
+      "Use $ceo-dev-loop to show the current loop status."
+    ]
+  }
+}
