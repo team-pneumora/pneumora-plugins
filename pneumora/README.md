@@ -1,16 +1,22 @@
 # pneumora
 
-> 의도적 기억과 회귀 방지를 위한 Claude Code 워크플로우 도구 모음
+> 의도적 기억과 회귀 방지를 위한 Claude Code / Codex 워크플로우 도구 모음
 
 `claude-md-management` (공식)가 CLAUDE.md 품질 관리에 집중한다면,
 `pneumora`는 **"매번 까먹는 것"과 "또 터지는 회귀"**를 시스템적으로 잡는 데 집중합니다.
 
 ## 설치
 
+### Claude Code
+
 ```bash
 claude plugin marketplace add team-pneumora/pneumora-plugins
 claude plugin install pneumora@pneumora-plugins
 ```
+
+### Codex
+
+이 플러그인은 `.codex-plugin/plugin.json`과 `skills/pneumora/SKILL.md`를 포함합니다. Codex에서 이 저장소를 플러그인 marketplace로 불러오거나, 스킬만 직접 쓰려면 `skills/pneumora/`를 `$CODEX_HOME/skills/`로 복사하세요.
 
 ## 제공 기능
 
@@ -27,6 +33,8 @@ claude plugin install pneumora@pneumora-plugins
 | 에이전트 | 역할 |
 |---------|------|
 | `codebase-explorer` | 파일 탐색·사용처 추적·피처 맵핑 전담. Read/Glob/Grep만 사용하여 메인 세션 컨텍스트 오염 방지 |
+
+Codex에서는 slash command를 직접 등록하지 않고 같은 요청을 스킬 트리거로 처리합니다. `CLAUDE.md`뿐 아니라 Codex 프로젝트의 `AGENTS.md`도 CRITICAL/Regression Log 대상으로 취급합니다.
 
 ## 철학
 

@@ -1,13 +1,21 @@
 ---
 name: claude-md-harness
-description: CLAUDE.md 파일을 객체지향적 하네스(harness) 구조로 분산시키는 스킬. "CLAUDE.md 쪼개줘", "하네스 구조로 만들어줘", "CLAUDE.md 분산", "CLAUDE.md 리팩토링", "CLAUDE.md 정리", "프로젝트 CLAUDE.md 구조화", "디렉토리별 CLAUDE.md" 등의 요청 시 반드시 이 스킬을 사용한다. 새 프로젝트 셋업 시 CLAUDE.md 초기 구조를 잡을 때도 사용한다. Claude Code에서 CLAUDE.md를 효율적으로 관리하고 싶다는 맥락이면 무조건 트리거.
+description: CLAUDE.md 또는 AGENTS.md 파일을 객체지향적 하네스(harness) 구조로 분산시키는 스킬. "CLAUDE.md 쪼개줘", "AGENTS.md 쪼개줘", "하네스 구조로 만들어줘", "instruction 파일 분산", "CLAUDE.md 리팩토링", "AGENTS.md 정리", "프로젝트 instruction 구조화", "디렉토리별 CLAUDE.md/AGENTS.md" 등의 요청 시 반드시 이 스킬을 사용한다. 새 프로젝트 셋업 시 Claude Code 또는 Codex instruction 파일 초기 구조를 잡을 때도 사용한다.
 ---
 
-# CLAUDE.md Harness — 객체지향 분산 구조화
+# CLAUDE.md / AGENTS.md Harness — 객체지향 분산 구조화
+
+## 대상 파일 선택
+
+- Claude Code 맥락이면 `CLAUDE.md`를 대상으로 한다.
+- Codex 맥락이면 `AGENTS.md`를 대상으로 한다.
+- 사용자가 파일명을 명시하면 그 파일명을 따른다.
+- 두 파일이 모두 있고 사용자가 "둘 다" 또는 "Claude와 Codex 호환"을 요청하면 같은 하네스 구조를 양쪽에 적용하되, 각 파일의 제품별 규칙은 섞지 않는다.
+- 아래 절차에서 `CLAUDE.md`라고 적힌 부분은 선택된 대상 파일명으로 치환해서 적용한다.
 
 ## 핵심 원칙
 
-CLAUDE.md를 **OOP 상속 모델**처럼 계층화한다:
+instruction 파일을 **OOP 상속 모델**처럼 계층화한다:
 
 ```
 project-root/
@@ -151,4 +159,4 @@ find . -name "CLAUDE.md" -not -path "*/node_modules/*" -exec sh -c 'echo "$(wc -
 2. **상속 원칙**: 상위 규칙을 하위에서 반복하지 않는다 (DRY)
 3. **실용성 우선**: 형식보다 내용. 해당 디렉토리 작업 시 실제로 도움이 되는 정보만 넣는다
 4. **PROGRESS.md는 별도**: 세션 연속성/진행 상황은 PROGRESS.md에, 규칙/구조는 CLAUDE.md에
-5. **gitignore 체크**: CLAUDE.md가 .gitignore에 포함되어 있지 않은지 확인
+5. **gitignore 체크**: 대상 instruction 파일이 .gitignore에 포함되어 있지 않은지 확인
