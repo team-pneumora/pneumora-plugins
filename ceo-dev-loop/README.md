@@ -134,6 +134,38 @@ v0.3.x ~ v0.4.x 가 어휘 블랙리스트로 [DONE] 회귀를 막던 것과 달
 - **`[SPRINT COMPLETE]` / `[DONE]` 분리** — phase 완료와 프로젝트 완료를 다른 신호로. SPRINT COMPLETE 는 루프 계속, DONE 만 종료.
 - **`[DONE 후보]` 5-시나리오 검증** — 7-gate 통과 후 즉시 DONE 아님. 사용자가 산출물 받아 처음 시도할 5가지를 Dev 가 실제 실행 → 5/5 통과 시에만 진짜 DONE. GOAL.md drift 에 강한 외부 검증.
 
+## 기존 프로젝트 업그레이드 (v0.5.x → v0.6.0)
+
+플러그인을 업데이트해도 **이미 init 한 프로젝트의 산출물은 자동으로 안 바뀝니다.** 플러그인 파일(`agents/ceo.md`, `commands/*`)은 매 호출 fresh 로 읽혀 자동 갱신되지만, v0.5.x `init` 이 프로젝트에 찍어둔 `CLAUDE.md` · `docs/STATUS.md` 는 옛 규칙 그대로 남아 새 CEO(v0.6.0)와 엇박자가 납니다.
+
+> ⚠️ `/ceo-dev-loop:init` **재실행 금지** — join 모드라도 CLAUDE.md 에 v0.6.0 섹션을 *append* 해서 v0.5.x 섹션과 중복됩니다. 아래 수술적 절차를 쓰세요.
+
+### 1. 프로젝트 `CLAUDE.md` 동기화 (필수)
+`## CEO-Dev 자동 루프 규칙 (ceo-dev-loop v0.5.x)` 섹션 전체를 현재 `commands/init.md` 가 생성하는 v0.6.0 블록으로 교체. 핵심:
+
+- **통째로 삭제**: `### 컨텍스트 리프레시 절차`(COMPACT/CLEAR) · `### 컴팩트 보고 형식 — 최소화` · `### Dev 측 컨텍스트 한계 단계적 처리`(1/2/3차)
+- **추가**: `### 컨텍스트 관리 (v0.6.0 — auto-compact 위임)` — STATUS `활성 컨텍스트` + DECISIONS 디스크 핸드오프 유지가 Dev 의 유일한 컨텍스트 책임
+- **작업 흐름 step 5**: `[COMPACT]/[CLEAR]` 분기 → `[SPRINT COMPLETE]` / `[DONE 후보]` 분기
+- **우회 어휘 safety-belt**: 재호출 메시지의 `[COMPACT]` 참조 제거 + "컴팩트/세션 언급"을 우회 어휘에 추가
+- **CEO 신호별 Dev 행동**: `[GOAL drift] 매 응답` → 평상시 DECISIONS / 완료 게이트 GOAL.md 분리
+
+### 2. `docs/STATUS.md` 정리 (필수 — 놓치기 쉬움)
+- `## 턴 카운터` 섹션 **삭제** (v0.6.0 폐지 — auto-compact 시대엔 vestigial). 호출 형식의 "마지막 컴팩트 이후 N 턴" 줄, "@ceo 호출 시점" 의 "5턴 누적 시" 항목도 함께 제거
+- `## 활성 컨텍스트` 의 "컴팩트 직후 재진입…" 줄 → "컨텍스트 요약(auto-compact) 후 우선 읽을 파일: GOAL.md → STATUS.md → DECISIONS.md"
+
+### 3. `docs/GOAL.md` 점검 (선택)
+v0.5.x 가 매 턴 흡수한 체크박스 중 "진짜 요구사항이 아닌 부수작업"이 섞였으면 DECISIONS.md 로 내림. 강제는 아님 — 다음 `[DONE 후보]` 게이트에서 CEO 가 어차피 drift 감사를 합니다.
+
+### 4. 재개
+`/ceo-dev-loop:start`. 이후부턴 compact 신호 없이, drift 는 완료 경계에서만 돕니다.
+
+### 가장 빠른 방법
+대상 프로젝트에서 Claude 에게 한 줄로 지시:
+
+> **"ceo-dev-loop v0.6.0 으로 CLAUDE.md 와 docs/STATUS.md 를 동기화해줘 — 턴 카운터·COMPACT/CLEAR 절차 전부 제거, drift 는 완료 경계 전용으로. 유효한 부분(@ceo 호출 시점, [DONE] 1차 필터, SPRINT COMPLETE/DONE 후보, 예외 list)은 보존."**
+
+→ 위 1~2 를 한 번에 처리합니다. (턴 카운터 제거를 명시해야 빠짐없이 정리됩니다.)
+
 ## Changelog
 
 ### v0.6.0 (매-턴 의식 → 완료 경계 게이트)
