@@ -1,6 +1,6 @@
 # ceo-dev-loop
 
-> **v0.5.0** — DONE 회귀 근본 수정. GOAL drift 측정 + SPRINT COMPLETE 분리 + DONE 후보 5-시나리오 외부 검증
+> **v0.6.0** — 매-턴 의식 → 완료 경계 게이트. 컨텍스트는 빌트인 auto-compact 위임(수동 /compact 신호 폐지), GOAL drift 검사는 완료 경계 전용이라 평상시 GOAL.md 안정 유지
 
 Claude Code와 Codex에서 돌아가는 **CEO-Dev 자동화 루프** 플러그인.
 
@@ -70,6 +70,8 @@ Dev(메인) → 코드 작성 → STATUS.md 갱신 → @ceo 호출
 | `docs/STATUS.md` | 현재 진행 상태 | Dev (매 턴) |
 | `docs/DECISIONS.md` | 결정 로그 | CEO (결정 시) |
 
+> v0.6.0: GOAL.md 는 다시 거의 고정 — CEO 가 GOAL.md 를 건드리는 건 완료 게이트에서 "완료를 막는 in-scope 누락" 을 발견했을 때뿐. 평상시 인접 작업은 DECISIONS.md 로 흐른다.
+
 ## 제공 요소
 
 - **명령어**: `/ceo-dev-loop:init`, `/ceo-dev-loop:start`, `/ceo-dev-loop:status`
@@ -107,17 +109,13 @@ claude
 - `Dev=Sonnet / CEO=Opus` — 빠른 코딩 + 신중한 리뷰
 - `Dev=Opus / CEO=Haiku` — 최대 속도·최저 비용, 판단 품질은 낮아짐
 
-## 컨텍스트 관리 (v0.3.0)
+## 컨텍스트 관리 (v0.6.0 — auto-compact 위임)
 
-자율 루프는 메인 Dev 세션 컨텍스트가 누적된다는 약점이 있습니다. 이를 다음 4단계로 방어합니다.
+자율 루프는 메인 Dev 세션 컨텍스트가 누적된다는 약점이 있습니다. v0.5.0 까지는 CEO 가 5턴/milestone/빌드그린마다 `[COMPACT]` 신호를 쏘고 사용자가 `/compact` 를 입력하는 수동 절차로 방어했지만 — 신호가 거의 매 턴 발동해 과도하게 잦았습니다. v0.6.0 은 이를 폐지하고 단순화합니다.
 
-1. **CEO 가 매번 fresh 로 GOAL/STATUS/DECISIONS 재독** — 서브에이전트라 매 호출 fresh, 목표 drift 차단
-2. **CEO 응답에 `[컨텍스트]` 신호** — milestone 완료 직후, 5턴 이상 누적, 안전 시점에 `[COMPACT]` (필요 시 `[CLEAR]`)
-3. **STATUS.md `## 활성 컨텍스트` 섹션** — 컴팩트/클리어 후 재시작이 가능한 수준의 메모. 현재 만지는 파일·미해결 결정·다음 첫 단계
-4. **턴 카운터** — `STATUS.md` 에 `마지막 컴팩트 이후 N 턴` 누적, `/ceo-dev-loop:status` 가 5 이상이면 경고 표시
-
-리프레시 절차 (CLAUDE.md 에 자동 주입):
-1. STATUS.md `활성 컨텍스트` 보강 → 2. DECISIONS.md 누적 → 3. (선택) `docs/checkpoints/NN-{slug}.md` 스냅샷 → 4. `/compact` 또는 `/clear` → 5. 재진입 후 GOAL → STATUS → DECISIONS 다시 읽고 카운터 리셋
+1. **컨텍스트 한계 = 빌트인 auto-compact 에 위임** — Claude Code 가 컨텍스트가 차면 자동 요약 후 같은 세션에서 연속 진행. CEO 도 Dev 도 컴팩트/세션/재진입을 사용자에게 언급하지 않음. `[COMPACT]/[CLEAR]` 신호·턴 카운터·수동 `/compact` 절차 전부 제거.
+2. **디스크 핸드오프 규율만 유지** — `STATUS.md ## 활성 컨텍스트` (현재 만지는 파일·미해결 결정·다음 첫 단계) 를 매 턴 갱신 + 결정은 `DECISIONS.md` 누적. auto-compact 요약이 무엇을 버리든 GOAL → STATUS → DECISIONS 3파일만 읽으면 재시작 가능.
+3. **CEO 는 여전히 매 호출 fresh** — 서브에이전트라 매번 GOAL/STATUS/DECISIONS 재독, 목표 drift 차단은 그대로.
 
 ## 목표 고수 (v0.3.0)
 
@@ -128,15 +126,23 @@ CEO 응답 형식이 강화되었습니다:
 - 같은 방향 3턴 이상 진척 없으면 CEO 자가 점검 ("내가 목표를 잘못 이해했나?")
 - Dev 지시는 항상 파일/함수 단위 + 검증 명령 동봉
 
-## 목표 고수 강화 (v0.5.0)
+## 목표 고수 강화 (v0.5.0 → v0.6.0)
 
-v0.3.x ~ v0.4.x 가 어휘 블랙리스트로 [DONE] 회귀를 막던 것과 달리, v0.5.0 은 구조 게이트를 추가:
+v0.3.x ~ v0.4.x 가 어휘 블랙리스트로 [DONE] 회귀를 막던 것과 달리, v0.5.0 은 구조 게이트를 추가했고, v0.6.0 은 그 게이트가 매 턴 발동하던 과부하를 완료 경계로 옮겼습니다:
 
-- **`[GOAL drift]` 라인 강제** — 매 응답에서 STATUS/DECISIONS 의 완료 작업이 GOAL.md 체크박스에 매핑되는지 확인. 미매핑 1개 이상이면 [DONE] 자동 금지, GOAL.md 보강 우선.
+- **`[GOAL drift]` 게이트 (v0.6.0 — 완료 경계 전용)** — STATUS/DECISIONS 의 완료 작업이 GOAL.md 체크박스에 매핑되는지 확인하는 full 감사를 **`[SPRINT COMPLETE]`/`[DONE 후보]` 발행 직전에만** 실행. 평상시 턴은 "이번 작업 GOAL 범위 안/밖" 한 줄 판정만 하고, 범위 밖 부수작업은 DECISIONS.md 에 기록(GOAL.md 안 건드림). GOAL.md 보강은 완료를 막는 in-scope 누락일 때만 → GOAL.md 가 다시 안정적 북극성으로 복귀.
 - **`[SPRINT COMPLETE]` / `[DONE]` 분리** — phase 완료와 프로젝트 완료를 다른 신호로. SPRINT COMPLETE 는 루프 계속, DONE 만 종료.
 - **`[DONE 후보]` 5-시나리오 검증** — 7-gate 통과 후 즉시 DONE 아님. 사용자가 산출물 받아 처음 시도할 5가지를 Dev 가 실제 실행 → 5/5 통과 시에만 진짜 DONE. GOAL.md drift 에 강한 외부 검증.
 
 ## Changelog
+
+### v0.6.0 (매-턴 의식 → 완료 경계 게이트)
+사용자 관찰 두 가지 — "compact 를 너무 자주 한다" + "goal 을 너무 자주 갱신한다" — 의 뿌리는 하나였음: **경계에서만 발동해야 할 게이트를 매 턴 의식(ritual)으로 돌린 것.** v0.3.1~v0.5.0 동안 회귀 패치가 누적되며 매 응답에 박는 라인·신호가 늘어 평상시 턴이 과부하 상태였음.
+
+- **컨텍스트 = auto-compact 위임**: CEO 의 `[COMPACT]/[CLEAR]` 결정권 제거. v0.5.0 까지 `agents/ceo.md` 안에 "컨텍스트 자체 판단 금지"(CEO 권한 범위) ↔ "5턴/milestone/빌드그린마다 [COMPACT]"(컨텍스트 관리) 두 규칙이 정면충돌했고, 구체적 휴리스틱이 이겨 compact 가 과발동했음. 빌트인 auto-compact 가 처리하므로 신호·턴 카운터·수동 `/compact` 절차·단계적 에스컬레이션·"컴팩트 보고 최소화" 기계장치를 전부 삭제. CEO 는 fresh 재독 + STATUS/DECISIONS 핸드오프 규율만 유지.
+- **GOAL drift = 완료 경계 전용 게이트**: v0.5.0 은 drift 역매핑을 매 응답 의식으로 돌려, drift > 0 이 정상인 실제 개발에서 거의 매 턴 GOAL.md 가 수정됨 — "고정 목표" 가 출렁이고 골대가 계속 늘어나는 반대 부작용("프로젝트가 진행될수록"의 또 다른 얼굴). v0.6.0 은 full drift 감사를 `[SPRINT COMPLETE]`/`[DONE 후보]` 발행 직전에만 실행. 평상시 범위 밖 작업은 DECISIONS.md 기록, GOAL.md 편집은 "완료를 막는 in-scope 누락" 일 때만 → 조기 DONE 방어(완료 게이트)는 유지하면서 GOAL.md 안정화.
+- **유지된 안전장치**: 7-gate `[DONE]`, `[DONE 후보]` 5-시나리오 외부 검증, `[SPRINT COMPLETE]`/`[DONE]` 분리, 자율 루프 권한 + 우회 어휘 차단, Dev 1차 필터, init 자율화 — 그대로.
+- **제거**: `[COMPACT]/[CLEAR]` 신호, STATUS.md 턴 카운터, `/ceo-dev-loop:status` 의 턴 경고, "컨텍스트 리프레시 절차" · "컴팩트 보고 최소화" · "Dev 측 컨텍스트 한계 단계적 처리" 섹션.
 
 ### v0.5.0 (DONE 회귀 근본 수정)
 v0.3.1 ~ v0.4.1 의 어휘 블랙리스트 4번 패치에도 [DONE] 오발 회귀가 계속 돌아옴. 근본 원인은 GOAL.md 가 정적이라는 것 — 진행 중 발견된 요구사항이 GOAL 체크박스로 흡수되지 않은 채 STATUS/DECISIONS 에만 쌓여, 체크박스 100% 도달 시 정당하게 [DONE] 발사. "프로젝트가 진행될수록 DONE 주기가 짧아진다" 는 사용자 관찰이 결정적 증거. 어휘로는 못 막는 구조 결함. v0.5.0 은 3가지 구조 게이트로 차단.

@@ -32,4 +32,5 @@ This plugin was originally written for Claude Code slash commands and `@ceo` age
 - During `start`, read GOAL -> STATUS -> DECISIONS before changing code.
 - After each meaningful work unit, update `docs/STATUS.md` and record durable decisions in `docs/DECISIONS.md`.
 - `[DONE]` requires all required checkboxes and DoD items to be satisfied; phase or milestone completion is not enough.
-- If context refresh is needed, update STATUS/DECISIONS first, then ask the user for the one required `/compact` or `/clear` input.
+- Keep STATUS/DECISIONS restart-able every turn; context limits are handled by the host's built-in auto-compact — do not emit manual `/compact` or `/clear` signals (removed in v0.6.0).
+- Run the GOAL drift audit only at the `[SPRINT COMPLETE]` / `[DONE 후보]` completion boundary, not every turn. Mid-loop, log out-of-scope work to DECISIONS.md; edit GOAL.md only for an in-scope gap that blocks completion.
