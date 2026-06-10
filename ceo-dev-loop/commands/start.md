@@ -8,11 +8,12 @@ description: CEO-Dev 자동 루프를 시작합니다. GOAL.md 기반으로 작�
 1. `docs/GOAL.md`가 있는지 확인 — 없으면 `/ceo-dev-loop:init` 먼저 실행하라고 안내
 2. `docs/GOAL.md`의 "필수 요구사항" 섹션이 비어있으면 사용자에게 작성 요청
 
-## 루프 시작 (ceo-dev-loop v0.6.0)
+## 루프 시작 (ceo-dev-loop v0.7.0)
 
-1. `docs/GOAL.md`, `docs/STATUS.md`, `docs/DECISIONS.md` (있으면) 전부 읽기
-2. 현재 상태 기반으로 첫 작업 파악 (STATUS가 "시작 전"이면 초기 세팅부터)
-3. `@ceo`를 먼저 호출해 시작 승인 및 첫 작업 지시를 받기
+1. **루프 센티널 생성/리셋**: `echo 0 > docs/.ceo-loop-active` (Stop hook 활성화 + 연속 차단 카운터 리셋. `.gitignore` 에 없으면 추가)
+2. `docs/GOAL.md`, `docs/STATUS.md`, `docs/DECISIONS.md` (있으면) 전부 읽기 — DECISIONS 는 `## 정책` 과 `## 가정` 먼저
+3. 현재 상태 기반으로 첫 작업 파악 (STATUS가 "시작 전"이면 초기 세팅부터)
+4. `@ceo`를 먼저 호출해 시작 승인 및 첫 작업 지시를 받기
    - 호출 메시지:
    ```
    @ceo 프로젝트 시작
@@ -27,14 +28,18 @@ description: CEO-Dev 자동 루프를 시작합니다. GOAL.md 기반으로 작�
    [요청]
    첫 번째 작업 지시 바랍니다.
    ```
-4. CEO 응답을 받고 CLAUDE.md 규칙에 따라 루프 실행
-5. `[DONE]` 나올 때까지 자동 반복
+5. CEO 응답을 받고 CLAUDE.md 규칙에 따라 루프 실행
+6. `[DONE]` 나올 때까지 자동 반복 (종료 절차에서 `docs/.ceo-loop-active` 삭제)
 
 ## 주의
 - 각 턴마다 사용자에게 확인받지 않음 (CEO가 승인 역할)
-- 예외: CLAUDE.md 에 명시된 "사용자 확인 필수" 항목만 확인
+- 예외: CLAUDE.md "사용자 확인 필수" 항목만 확인 — 단 `docs/GOAL.md` `## 권한 (사전 위임)` 에 위임된 항목은 확인 없이 진행. 질문 직전 센티널 삭제, 재개 시 재생성
+- 모호함은 사용자 질문이 아니라 가정으로: CEO 가 채택한 가정을 DECISIONS.md `## 가정` 에 기록하고 진행
+- DECISIONS.md `## 정책` 에 매칭되는 결정은 CEO 호출 없이 적용 (fast-path), `## 이력` 에 1줄 기록
+- CEO 가 1~3개 작업 패키지를 주면 패키지 전체 완료 후 호출 — 분기·실패·모호함 발생 시 즉시 중단하고 호출
 - 에러 발생 시 자체 해결 시도 → 실패하면 CEO에게 에스컬레이션
 - 컨텍스트 한계는 Claude Code 빌트인 auto-compact 가 자동 처리 — 컴팩트/세션을 사용자에게 언급하지 않음 (STATUS.md `활성 컨텍스트` 만 매 턴 유지)
 - CEO 응답에 `[DONE 후보]` 가 있으면 5 시나리오 모두 실행 후 결과 보고 → `@ceo` 재호출
 - `[SPRINT COMPLETE]` 는 종료 신호 아님 — 같은 응답의 다음 작업 즉시 착수
 - drift 검사는 완료 경계(`[SPRINT COMPLETE]`/`[DONE 후보]`) 전용 — 평상시 범위 밖 작업은 DECISIONS.md 기록, GOAL.md 보강은 완료를 막는 in-scope 누락일 때만
+- Stop hook 차단 메시지를 받으면: GOAL 미완료 → 즉시 계속, 정당한 정지(3경우) → 센티널 삭제 후 종료

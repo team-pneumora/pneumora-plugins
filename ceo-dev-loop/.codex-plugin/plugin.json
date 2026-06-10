@@ -1,7 +1,7 @@
 {
   "name": "ceo-dev-loop",
-  "version": "0.6.0",
-  "description": "Autonomous CEO-Dev workflow that uses GOAL, STATUS, and DECISIONS handoff files to keep implementation aligned with a project objective.",
+  "version": "0.7.0",
+  "description": "Autonomous CEO-Dev workflow that uses GOAL, STATUS, and DECISIONS handoff files to keep implementation aligned with a project objective. Resolves ambiguity via recorded assumptions, reuses decision policies, and minimizes user intervention.",
   "author": {
     "name": "Pneumora",
     "url": "https://github.com/team-pneumora"

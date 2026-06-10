@@ -29,8 +29,13 @@ This plugin was originally written for Claude Code slash commands and `@ceo` age
 
 - During `init`, classify the project as A/B/C/D using the command file, gather concise context, then write the loop docs.
 - Do not ask for confirmation except for the safety cases in the command file: overwriting an existing `docs/GOAL.md` or genuinely missing information.
-- During `start`, read GOAL -> STATUS -> DECISIONS before changing code.
-- After each meaningful work unit, update `docs/STATUS.md` and record durable decisions in `docs/DECISIONS.md`.
+- Resolve ambiguity with recorded assumptions, not user questions: log `가정: {content} — 근거 (사용자 미확인)` under DECISIONS.md `## 가정`, proceed, and surface the full assumption list in the final `[DONE]` report.
+- Promote recurring decision kinds (library choice, naming, error handling) to DECISIONS.md `## 정책`; apply matching policies without a CEO round-trip (fast-path) and log one line under `## 이력`.
+- Pre-authorized actions in GOAL.md `## 권한 (사전 위임)` run without user confirmation; everything else follows the exception list.
+- During `start`, read GOAL -> STATUS -> DECISIONS (policies and assumptions first) before changing code.
+- After each meaningful work unit, update `docs/STATUS.md` including one line of verification evidence (command + key output); a checkbox `[x]` without evidence does not count.
+- CEO may issue 1-3 task packages per call; execute the whole package, but stop and call back on any fork, failure, or ambiguity.
 - `[DONE]` requires all required checkboxes and DoD items to be satisfied; phase or milestone completion is not enough.
-- Keep STATUS/DECISIONS restart-able every turn; context limits are handled by the host's built-in auto-compact — do not emit manual `/compact` or `/clear` signals (removed in v0.6.0).
+- Keep STATUS/DECISIONS restart-able every turn; context limits are handled by the host's built-in auto-compact — do not emit manual `/compact` or `/clear` signals.
 - Run the GOAL drift audit only at the `[SPRINT COMPLETE]` / `[DONE 후보]` completion boundary, not every turn. Mid-loop, log out-of-scope work to DECISIONS.md; edit GOAL.md only for an in-scope gap that blocks completion.
+- Loop enforcement sentinel (`docs/.ceo-loop-active`) and the Stop hook are **Claude Code only**. In Codex, rely on the prompt rules above and do not create the sentinel; never end a turn waiting for the user unless the goal is done or a genuine exception applies.

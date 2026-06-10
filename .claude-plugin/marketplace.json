@@ -17,7 +17,7 @@
     {
       "name": "ceo-dev-loop",
       "source": "./ceo-dev-loop",
-      "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.6.0). init 1회로 GOAL 분해 + 자율 루프 시작, 사용자 의사결정 0회 default. 컨텍스트는 빌트인 auto-compact 위임(수동 /compact 신호 폐지), GOAL drift 검사는 완료 경계(SPRINT COMPLETE/DONE 후보) 전용 게이트라 평상시 GOAL.md 가 안정적으로 유지됨."
+      "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.7.0). init 1회로 GOAL 분해 + 자율 루프 시작, 사용자 의사결정 0회 default. Stop hook 이 루프 정지를 하네스 레벨에서 차단, 모호함은 질문 대신 기록된 가정으로 진행([DONE] 보고에서 사후 검토), 재발 결정은 정책 fast-path 로 CEO 왕복 생략, 권한 사전 위임으로 중간 멈춤 제거. drift 검사는 완료 경계 전용 게이트."
     },
     {
       "name": "dev-discipline",
