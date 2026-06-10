@@ -26,6 +26,12 @@ Support both instruction-file conventions:
 
 When applying a command file that says `CLAUDE.md`, treat it as `CLAUDE.md or AGENTS.md` unless the user explicitly requested one filename.
 
+## Deploy Gate Hook (Claude Code only)
+
+- This plugin ships a `PreToolUse` hook (`hooks/check-deploy-gate.sh`) that automatically blocks `git push` while untracked `plugin.json` / `SKILL.md` / `.codex-plugin` paths exist (zombie-deploy prevention).
+- The hook is mechanical enforcement of the same rule the `check-deploy` workflow re-reads; do not treat a hook block as an error — fix tracking (`git add` + commit) and retry.
+- Codex does not run Claude Code hooks: in Codex sessions, run the `check-deploy` workflow manually before any push.
+
 ## Shared Rules
 
 - Preserve extracted CRITICAL, Regression Log, and deploy text verbatim; do not summarize or rewrite it.

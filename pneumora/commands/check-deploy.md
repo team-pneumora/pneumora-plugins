@@ -8,6 +8,10 @@ allowed-tools: Read, Glob, Bash(pwd), Bash(git rev-parse *), Bash(git status *),
 push 직전에 **배포 관련 정보를 다시 각인하고** git 상태를 체크한다.
 실제 push는 하지 않는다 — 사용자가 명시적으로 쳐야 한다.
 
+> 참고: 이 플러그인의 `hooks/check-deploy-gate.sh` (PreToolUse hook, Claude Code 전용)가
+> 미추적 plugin.json/SKILL.md/.codex-plugin 상태의 `git push` 를 자동 차단한다.
+> 이 커맨드는 그 기계 게이트와 별개로, push 전 맥락 재각인용 수동 점검이다.
+
 ## 실행 절차
 
 ### 1. 대상 CLAUDE.md 탐색

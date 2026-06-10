@@ -1,7 +1,7 @@
 {
   "name": "pneumora",
-  "version": "0.1.0",
-  "description": "Intentional project memory and regression-prevention workflows for CRITICAL notes, regression logs, deploy checks, and safe codebase exploration.",
+  "version": "0.2.0",
+  "description": "Intentional project memory and regression-prevention workflows for CRITICAL notes, regression logs with archive rotation, deploy checks with a pre-push zombie-file gate hook, and safe codebase exploration.",
   "author": {
     "name": "Pneumora",
     "url": "https://github.com/team-pneumora"

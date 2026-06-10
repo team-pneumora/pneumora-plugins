@@ -12,7 +12,7 @@
     {
       "name": "pneumora",
       "source": "./pneumora",
-      "description": "의도적 기억과 회귀 방지 워크플로우 (CRITICAL, 회귀 이력, 배포 가드, 탐색 서브에이전트)"
+      "description": "의도적 기억과 회귀 방지 워크플로우 (v0.2.0). CRITICAL, 회귀 이력 (5건 초과 자동 아카이브 로테이션), 배포 가드 + git push 좀비 파일 자동 차단 PreToolUse hook, 탐색 서브에이전트."
     },
     {
       "name": "ceo-dev-loop",
