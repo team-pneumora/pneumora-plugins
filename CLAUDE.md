@@ -13,10 +13,11 @@
 2. **같은 플러그인의 `.claude-plugin/plugin.json` ↔ `.codex-plugin/plugin.json` 버전은 항상 동일하게**
    - 한쪽만 bump 하면 Codex 가 stale 버전을 서빙한다.
    - 버전 올릴 때 두 매니페스트 + 두 marketplace 엔트리를 한 커밋에 같이 수정.
+   - 체크: `bash scripts/validate-plugins.sh` (push 시 PreToolUse hook 자동 실행).
 
 3. **`git push` 직전 미추적 `plugin.json` / `SKILL.md` / `.codex-plugin/` 디렉토리가 있으면 push 금지**
    - Codex 쪽에서 플러그인이 작동하지 않는 좀비 상태가 된다.
-   - 체크: `git status --short` 결과에 `?? .*(plugin\.json|SKILL\.md|\.codex-plugin)` 패턴이 있으면 차단.
+   - 자동 차단: `.claude/settings.json` PreToolUse hook → `scripts/validate-plugins.sh --pre-push-hook`.
 
 4. **새 플러그인 추가는 반드시 `scripts/new-plugin.sh` 경유**
    - 두 marketplace.json 동기화를 보장. 수동 편집은 한쪽만 업데이트되는 회귀의 원인.
@@ -58,6 +59,7 @@
 | Path | Description |
 |------|-------------|
 | `scripts/new-plugin.sh` | 새 플러그인 스캐폴딩 (듀얼 매니페스트 + 두 marketplace 등록) |
+| `scripts/validate-plugins.sh` | 플러그인 무결성 검증 (버전 동기·JSON 파싱·좀비) — push 시 hook 자동 실행 |
 | `.claude-plugin/marketplace.json` | Claude Code 마켓플레이스 레지스트리 |
 | `.agents/plugins/marketplace.json` | Codex 마켓플레이스 레지스트리 |
 | `claude-md-harness/` | CLAUDE.md/AGENTS.md 하네스 구조화 스킬 |
