@@ -7,7 +7,7 @@
     {
       "name": "claude-md-harness",
       "source": "./claude-md-harness",
-      "description": "CLAUDE.md 하네스 구조화"
+      "description": "CLAUDE.md/AGENTS.md 하네스 구조화 (v1.1.0). 토큰 예산 기반 배치 (루트 상시 주입 ≤ ~800토큰), compact 생존 앵커 + PROGRESS.md 활성 컨텍스트, harness-lint.sh 재감사 모드."
     },
     {
       "name": "pneumora",

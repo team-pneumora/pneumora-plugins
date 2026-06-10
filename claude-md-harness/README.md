@@ -34,12 +34,29 @@ CLAUDE.md 분산시켜줘
 디렉토리별 CLAUDE.md 만들어줘
 ```
 
+유지보수(재감사)도 지원합니다:
+
+```
+harness 점검해줘
+CLAUDE.md 감사해줘
+```
+
 ## 핵심 원칙
 
-1. **DRY** — 상위에 있는 내용을 하위에서 반복하지 않는다
-2. **최소 단위** — 파일 3개 이하 디렉토리에는 CLAUDE.md를 만들지 않는다
-3. **적정 크기** — Root 30~80줄, Module 20~60줄, Leaf 10~40줄
-4. **실용성** — 빈 섹션은 만들지 않는다
+1. **토큰 과금 모델 최적화** — 루트는 매 프롬프트 상시 주입(상시 과금), 하위는 해당 디렉토리 작업 시에만 로드. 규칙은 "어겼을 때 깨지는 파일이 있는 디렉토리"에 둔다
+2. **DRY** — 상위에 있는 내용을 하위에서 반복하지 않는다
+3. **최소 단위** — 파일 3개 이하 디렉토리에는 CLAUDE.md를 만들지 않는다
+4. **토큰 예산** — Root ≤ ~800 / Module ≤ ~600 / Leaf ≤ ~400 토큰 (근사: 바이트÷3), 줄 수는 보조 지표
+5. **compact 생존 설계** — 규칙은 CLAUDE.md(재주입으로 생존), 진행 상황은 PROGRESS.md `## 활성 컨텍스트`(디스크 복구), 루트에 Compact Recovery 앵커 설치
+6. **실용성** — 빈 섹션은 만들지 않는다, 배경 서사는 README/ADR로
+
+## 번들 도구
+
+- `skills/claude-md-harness/scripts/harness-lint.sh` — 토큰 예산·빈 섹션·계층 간 중복·디렉토리 맵 동기화 일괄 점검
+
+```bash
+bash skills/claude-md-harness/scripts/harness-lint.sh CLAUDE.md   # 또는 AGENTS.md
+```
 
 ## 라이선스
 
