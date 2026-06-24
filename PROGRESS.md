@@ -1,7 +1,24 @@
 # PROGRESS
 
 > 세션 연속성용. 규칙·구조는 `CLAUDE.md` 참조.
-> 최종 업데이트: 2026-06-10
+> 최종 업데이트: 2026-06-24
+
+## 2026-06-24 세션 — 마켓플레이스 정리 (7 → 3개 플러그인)
+
+자주 쓰는 `ceo-dev-loop`·`claude-md-harness` + 레포 운영용 `pneumora` 3개만 유지. mattpocock/skills 기반 4개 derivative 제거.
+
+### 제거 (4개)
+- `dev-discipline`, `domain-language`, `comm-modes`, `gh-flow` — 디렉토리 `git rm -r` + 두 marketplace.json 엔트리
+- README Credits 섹션(mattpocock 적응 내역 전체) + CLAUDE.md Directory Map 4행 / 참고 1줄 동기 제거
+
+### 검증
+- `scripts/validate-plugins.sh` ✅ 통과 — 3개 버전 동기(0.7.0/1.1.0/0.2.0), 두 marketplace 파싱, 좀비 없음
+- `git status` — M: 두 marketplace·CLAUDE·README / D: 4개 디렉토리 staged / `??` 없음
+
+### 다음
+- 신규 플러그인 추가 예정 → 반드시 `scripts/new-plugin.sh` 경유 (수동 편집은 한쪽 marketplace 만 갱신되는 회귀 원인, CRITICAL #4)
+
+---
 
 ## 2026-06-10 세션 — 플러그인 강화 (토큰 효율 + 맥락 유지 + 자율성)
 

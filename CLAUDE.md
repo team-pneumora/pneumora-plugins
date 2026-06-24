@@ -65,12 +65,7 @@
 | `claude-md-harness/` | CLAUDE.md/AGENTS.md 하네스 구조화 스킬 |
 | `pneumora/` | CRITICAL · Regression Log · check-deploy 회귀 방지 스킬 묶음 |
 | `ceo-dev-loop/` | 목표 주도 자동화 루프 (Dev 구현 ↔ CEO/PM 체크포인트) |
-| `dev-discipline/` | TDD + 아키텍처 deepening + 마이크로커밋 리팩터 플랜 |
-| `domain-language/` | DDD 유비쿼터스 언어 + 도메인 모델 인터뷰 + grilling |
-| `comm-modes/` | Caveman 토큰 절약 모드 + write-a-skill 메타 스킬 |
-| `gh-flow/` | GitHub issue 기반 PRD/triage/QA 워크플로 |
 
 ## 참고
 
 - 플러그인 추가 절차 / 사용자 설치 가이드 → `README.md`
-- 출처 / mattpocock/skills 라이선스 / 적응 사항 → `README.md` Credits 섹션

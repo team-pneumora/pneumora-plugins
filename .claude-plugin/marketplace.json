@@ -18,26 +18,6 @@
       "name": "ceo-dev-loop",
       "source": "./ceo-dev-loop",
       "description": "CEO-Dev 2-에이전트 자동화 루프 (v0.7.0). init 1회로 GOAL 분해 + 자율 루프 시작, 사용자 의사결정 0회 default. Stop hook 이 루프 정지를 하네스 레벨에서 차단, 모호함은 질문 대신 기록된 가정으로 진행([DONE] 보고에서 사후 검토), 재발 결정은 정책 fast-path 로 CEO 왕복 생략, 권한 사전 위임으로 중간 멈춤 제거. drift 검사는 완료 경계 전용 게이트."
-    },
-    {
-      "name": "dev-discipline",
-      "source": "./dev-discipline",
-      "description": "TDD red-green-refactor + 코드베이스 아키텍처 디시플린 + 마이크로커밋 리팩터 플랜"
-    },
-    {
-      "name": "domain-language",
-      "source": "./domain-language",
-      "description": "DDD ubiquitous language 용어집 + domain model 인터뷰 + grill + zoom-out"
-    },
-    {
-      "name": "comm-modes",
-      "source": "./comm-modes",
-      "description": "출력 스타일 모드 (caveman 토큰 절감) + 새 skill 작성 메타-가이드"
-    },
-    {
-      "name": "gh-flow",
-      "source": "./gh-flow",
-      "description": "GitHub issue 기반 PRD/issues/triage 워크플로 (to-prd, to-issues, triage-issue, github-triage, qa-to-issue)"
     }
   ]
 }
