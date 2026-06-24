@@ -3,9 +3,9 @@
 > 세션 연속성용. 규칙·구조는 `CLAUDE.md` 참조.
 > 최종 업데이트: 2026-06-24
 
-## 2026-06-24 세션 — 마켓플레이스 정리 (7 → 3개 플러그인)
+## 2026-06-24 세션 — 마켓플레이스 정리(7→3) + handoff 추가(→4)
 
-자주 쓰는 `ceo-dev-loop`·`claude-md-harness` + 레포 운영용 `pneumora` 3개만 유지. mattpocock/skills 기반 4개 derivative 제거.
+자주 쓰는 `ceo-dev-loop`·`claude-md-harness` + 레포 운영용 `pneumora` 3개만 유지(mattpocock/skills 기반 4개 derivative 제거), 이후 신규 `handoff` 추가.
 
 ### 제거 (4개)
 - `dev-discipline`, `domain-language`, `comm-modes`, `gh-flow` — 디렉토리 `git rm -r` + 두 marketplace.json 엔트리
@@ -15,8 +15,16 @@
 - `scripts/validate-plugins.sh` ✅ 통과 — 3개 버전 동기(0.7.0/1.1.0/0.2.0), 두 marketplace 파싱, 좀비 없음
 - `git status` — M: 두 marketplace·CLAUDE·README / D: 4개 디렉토리 staged / `??` 없음
 
-### 다음
-- 신규 플러그인 추가 예정 → 반드시 `scripts/new-plugin.sh` 경유 (수동 편집은 한쪽 marketplace 만 갱신되는 회귀 원인, CRITICAL #4)
+### 신규 플러그인: handoff (v0.1.0)
+- 작업 종료 → 다음 작업자 핸드오프 자동화. `scripts/new-plugin.sh` 경유 스캐폴딩 후 SKILL.md 재작성
+- 파이프라인(트리거 1회 → 자동): 상태 수집 → 회귀 가드 → harness 점검·보완 → docs 기록 → `docs/handoff/HANDOFF.md` 진입점
+- docs 구조: 분리형(handoff·sessions·decisions·regressions). 트리거 "작업 종료/마무리/핸드오프/인수인계" + /handoff (한·영 병기)
+- `pneumora`·`claude-md-harness`·`ceo-dev-loop` 와 soft 연계 (설치 시 활용)
+- validate ✅ — 0.1.0 동기, 두 marketplace 등록, 좀비 없음
+
+### 다음 후보
+- handoff dogfooding: 실제 `/handoff` 로 이 레포 docs/ 생성해보고 템플릿 개선
+- new-plugin.sh CRITICAL #1 (description heredoc 직접 삽입) 미수정 — 향후 Python argv 경유로 통일
 
 ---
 

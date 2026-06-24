@@ -49,6 +49,7 @@ Add or import this repository as a local Codex plugin marketplace, then install 
 | [`claude-md-harness`](./claude-md-harness) | Distribute `CLAUDE.md` or `AGENTS.md` across your project in an OOP inheritance model (Root → Module → Leaf) |
 | [`pneumora`](./pneumora) | Intentional memory & regression-prevention workflow — CRITICAL section, regression log, deploy guard, exploration workflow |
 | [`ceo-dev-loop`](./ceo-dev-loop) | Goal-driven automation loop — Dev implements, CEO/PM review criteria guide checkpoints until the goal is met |
+| [`handoff`](./handoff) | Work-closeout automation — one trigger runs status capture, regression guard, harness lint, structured docs (sessions/decisions/regressions), and a `HANDOFF.md` entry point for the next worker |
 
 > This table is updated whenever a new plugin is added.
 

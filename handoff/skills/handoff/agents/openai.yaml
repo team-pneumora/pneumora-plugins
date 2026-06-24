@@ -1,0 +1,7 @@
+interface:
+  display_name: "handoff"
+  short_description: "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성"
+  default_prompt: "Use $handoff to help with this project."
+
+policy:
+  allow_implicit_invocation: true

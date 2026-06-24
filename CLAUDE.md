@@ -65,6 +65,7 @@
 | `claude-md-harness/` | CLAUDE.md/AGENTS.md 하네스 구조화 스킬 |
 | `pneumora/` | CRITICAL · Regression Log · check-deploy 회귀 방지 스킬 묶음 |
 | `ceo-dev-loop/` | 목표 주도 자동화 루프 (Dev 구현 ↔ CEO/PM 체크포인트) |
+| `handoff/` | 작업 종료 핸드오프 자동화 (상태 수집·회귀 가드·harness 점검·docs 기록·HANDOFF.md 진입점) |
 
 ## 참고
 

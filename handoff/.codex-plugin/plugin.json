@@ -1,0 +1,33 @@
+{
+  "name": "handoff",
+  "version": "0.1.0",
+  "description": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
+  "author": {
+    "name": "Pneumora",
+    "url": "https://github.com/team-pneumora"
+  },
+  "homepage": "https://github.com/team-pneumora/pneumora-plugins/tree/main/handoff",
+  "repository": "https://github.com/team-pneumora/pneumora-plugins",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude",
+    "handoff"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "handoff",
+    "shortDescription": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
+    "longDescription": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
+    "developerName": "Pneumora",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
+    "defaultPrompt": [
+      "Use $handoff to help with this project."
+    ]
+  }
+}
