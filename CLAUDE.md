@@ -44,4 +44,4 @@ Bash + Python 3 / JSON 매니페스트 / Markdown+YAML 스킬.
 
 ## 참고
 
-회귀 이력 전문 → `docs/REGRESSIONS.md` / 설치·기여 → `README.md`
+이어받기 → `docs/handoff/HANDOFF.md` / 회귀 이력 → `docs/REGRESSIONS.md` / 설치 → `README.md`

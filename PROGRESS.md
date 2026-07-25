@@ -7,11 +7,12 @@
 
 <!-- auto-compact 후 여기부터 읽는다. 작업 중 매 턴 갱신. -->
 
-- **현재 만지는 파일**: (없음 — 2026-07-25 세션 완료)
+- **현재 만지는 파일**: (없음 — 2026-07-25 세션 종료)
 - **미해결 결정**: `claude-md-harness` 는 이번 감사 범위 밖이었음 (유일하게 버전 그대로 1.1.0) — 같은 수준으로 점검할지 판단 필요
-- **다음 작업 첫 단계**: `/plugin marketplace update pneumora-plugins` + `/reload-plugins` 로 캐시 갱신 후, 실제 프로젝트에서 `/ceo-dev-loop:init` 을 돌려 v0.8.0 루프를 실전 검증
-- **커밋 상태**: `a01bc75..a7d8d25` 푸시 완료. 핸드오프 커밋만 남음
+- **다음 작업 첫 단계**: 실제 프로젝트에서 `/ceo-dev-loop:init "목표"` 로 루프 1회 완주 — 유일한 미검증 영역. 캐시는 이미 0.8.0/0.3.0/0.2.1 로 갱신·reload 완료
+- **커밋 상태**: `a01bc75..81489f2` 푸시 완료 + 핸드오프 커밋
 - **진입점**: `docs/handoff/HANDOFF.md`
+- **하네스 여유**: CLAUDE.md 790/800, AGENTS.md 796/800 — 7번째 CRITICAL 추가 시 기계 강제되는 규칙(#2·#3)부터 축약
 
 ## 2026-07-25 세션 — 플러그인 감사 + 후속 수정 (ceo-dev-loop 0.8.0 / pneumora 0.3.0 / handoff 0.2.0)
 
@@ -40,6 +41,13 @@
 - **[문서 오류] "플러그인 파일은 자동 적용" 이 틀렸다**: fresh 로 읽는 대상은 레포가 아니라 `~/.claude/plugins/cache/` 사본이고, 서드파티 마켓플레이스는 **auto-update 가 기본 꺼짐**. 그 안내를 따른 사용자는 v0.8.0 을 쓴다고 믿으며 v0.7.0 Stop hook 을 계속 돌린다. 두 README 에 `/plugin marketplace update` + `/reload-plugins` 0단계와 캐시 버전 확인법 추가 — 상세는 `docs/REGRESSIONS.md`
 - **[스킬 갭] 기존 관례 표에 `docs/REGRESSIONS.md` 누락**: 이 레포가 정확히 그 관례(pneumora 단일 파일 로테이션)를 쓰는데 표에 없어, 규칙대로면 `docs/regressions/` 를 새로 만들 뻔했다. 회귀 기록이 두 곳으로 갈리는 것이 이 표가 막으려는 상황 자체 → 행 추가 후 **0.2.1** bump
 - **검증된 것**: 기존 관례 존중 규칙이 실제로 작동 (`docs/sessions/` 대신 `PROGRESS.md` 에 기록), HANDOFF 템플릿의 신규 항목(브랜치·미커밋·환경 전제·루프 재개)이 실제로 채울 내용이 있음
+
+### harness 재감사 (세션 종료 전)
+lint 양쪽 0 경고. lint 가 못 잡는 항목을 수동 점검해 1건 발견·수정:
+
+- **`docs/handoff/HANDOFF.md` 가 루트 CLAUDE.md 에서 언급 0회** — 다음 작업자 진입점인데 하네스에서 발견 불가였음. `## 참고` 에 추가 (AGENTS.md 도 동일)
+- **분산은 하지 않기로 판단**: 4개 플러그인 디렉토리가 파일 수(>3) 기준으로는 Module CLAUDE.md 후보지만 ① CRITICAL #1 이 향하는 `scripts/` 는 2파일이라 스킬 자체 규칙상 대상이 아니고 ② hook 규칙(#5·#6)은 두 플러그인에 흩어져 있어 내리면 DRY 위반이며 ③ **CRITICAL 은 파일 규칙이 아니라 패턴 교훈** — #5 는 *앞으로 만들* hook 에도 적용되는데 아직 없는 디렉토리엔 CLAUDE.md 를 미리 둘 수 없다. ④ 플러그인별 CLAUDE.md 는 각 README 와 중복될 뿐 쓸 내용이 없음
+- **누적 파일**: `docs/REGRESSIONS.md` 9항목(~2.8K토큰), `PROGRESS.md` 4세션(~6.6K토큰). 둘 다 상시 주입이 아니라 토큰 누수는 없음. PROGRESS 는 `## 활성 컨텍스트` 가 맨 위라 부분 읽기가 가능한 구조 — 세션이 더 쌓이면 오래된 것부터 아카이브 검토
 
 ### Stop hook 실전 검증 (캐시 갱신 후)
 `claude plugin marketplace update` + `claude plugin update` ×3 → `/reload-plugins` 로 0.8.0/0.3.0/0.2.1 반영. `pneumora:codebase-explorer` 가 새 에이전트로 등장한 것이 0.3.0 로드의 직접 증거.

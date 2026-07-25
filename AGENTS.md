@@ -30,13 +30,13 @@
 
 | Path | Description |
 |------|-------------|
-| `scripts/` | `new-plugin.sh` 스캐폴딩 · `validate-plugins.sh` 무결성 검증 |
+| `scripts/` | `new-plugin.sh` 스캐폴딩 · `validate-plugins.sh` 검증 |
 | `.claude-plugin/` · `.agents/plugins/` | 두 레지스트리 — 동시 갱신 |
-| `claude-md-harness/` | 하네스 구조화 |
-| `pneumora/` | CRITICAL·회귀 로그·배포 가드 |
+| `claude-md-harness/` | 하네스 |
+| `pneumora/` | CRITICAL·회귀·배포 가드 |
 | `ceo-dev-loop/` | 자율 루프 (Codex 는 프롬프트 규칙) |
-| `handoff/` | 작업 종료 핸드오프 |
+| `handoff/` | 종료 핸드오프 |
 
 ## 참고
 
-회귀 이력 → `docs/REGRESSIONS.md` / 설치·기여 → `README.md`
+이어받기 → `docs/handoff/HANDOFF.md` / 회귀 → `docs/REGRESSIONS.md` / 설치 → `README.md`
