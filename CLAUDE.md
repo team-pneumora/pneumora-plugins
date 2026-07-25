@@ -3,70 +3,45 @@
 > Claude Code + Codex 듀얼 플러그인 마켓플레이스
 
 ## ⚠️ CRITICAL
-<!-- /pneumora:critical 으로 매 세션 각인. 위반 시 회귀 또는 마켓플레이스 일관성 파괴. -->
 
-1. **`scripts/new-plugin.sh` 의 `$DESCRIPTION` / `$PLUGIN_NAME` 을 JSON/YAML heredoc 에 직접 박지 말 것**
-   - 큰따옴표·백슬래시·개행이 들어오면 `plugin.json`, `openai.yaml` 이 파싱 불가 상태로 생성된다.
-   - 안전 경로: Python heredoc(argv 경유) 방식으로 통일하거나 `jq -Rs` 로 escape 후 삽입.
-   - 위치: `scripts/new-plugin.sh:75-122, 156-164, 167-192`
+1. **스캐폴딩 스크립트에 사용자 입력을 heredoc 직접 삽입 금지** — Python heredoc(argv) 또는 `jq -Rs` escape 경유. `scripts/new-plugin.sh:75-122,156-164,167-192`
+2. **버전은 `.claude-plugin` ↔ `.codex-plugin` ↔ 두 marketplace.json 을 한 커밋에 동시 bump** — 한쪽만 올리면 Codex 가 stale 서빙
+3. **미추적 `plugin.json` / `SKILL.md` / `.codex-plugin/` 있으면 push 금지** — Codex 좀비 상태
+4. **새 플러그인은 반드시 `scripts/new-plugin.sh` 경유** — 수동 편집은 marketplace 한쪽만 갱신되는 회귀 원인
+5. **Python 없는 환경에서 `new-plugin.sh` 금지** — marketplace 등록이 silent skip (`:258-266`)
+6. **hook 스크립트는 프로젝트 파일을 `$CLAUDE_PROJECT_DIR` 로 앵커** — 상대 경로 + "없으면 통과" 는 안전장치를 조용히 끄는 패턴
 
-2. **같은 플러그인의 `.claude-plugin/plugin.json` ↔ `.codex-plugin/plugin.json` 버전은 항상 동일하게**
-   - 한쪽만 bump 하면 Codex 가 stale 버전을 서빙한다.
-   - 버전 올릴 때 두 매니페스트 + 두 marketplace 엔트리를 한 커밋에 같이 수정.
-   - 체크: `bash scripts/validate-plugins.sh` (push 시 PreToolUse hook 자동 실행).
+2·3 은 `scripts/validate-plugins.sh` 가 기계 강제 (push 시 hook 자동).
 
-3. **`git push` 직전 미추적 `plugin.json` / `SKILL.md` / `.codex-plugin/` 디렉토리가 있으면 push 금지**
-   - Codex 쪽에서 플러그인이 작동하지 않는 좀비 상태가 된다.
-   - 자동 차단: `.claude/settings.json` PreToolUse hook → `scripts/validate-plugins.sh --pre-push-hook`.
+## Compact Recovery
 
-4. **새 플러그인 추가는 반드시 `scripts/new-plugin.sh` 경유**
-   - 두 marketplace.json 동기화를 보장. 수동 편집은 한쪽만 업데이트되는 회귀의 원인.
-
-5. **Python 없는 환경에서 `new-plugin.sh` 사용 금지**
-   - marketplace.json 자동 업데이트가 silent skip 되며 (`scripts/new-plugin.sh:258-266`) 등록 안 된 좀비 디렉토리만 만들어진다.
-
-## 📋 Regression Log
-<!-- /pneumora:log-regression 으로 누적. 한 번 겪은 문제는 다시 겪지 않는다. -->
-
-- [2026-05-14] scripts/new-plugin.sh 가 $DESCRIPTION 을 JSON/YAML heredoc 에 직접 박아, 큰따옴표·백슬래시·개행이 포함된 입력이 들어오면 plugin.json·openai.yaml 이 파싱 불가 상태로 생성됨
-  - 영향: `scripts/new-plugin.sh:75-122, 156-164, 167-192`
-  - 재발 방지: 스캐폴딩 스크립트에서 사용자 입력값을 매니페스트·YAML 에 박을 때 반드시 Python heredoc(argv 경유) 또는 `jq -Rs` 로 escape
-
-- [2026-05-14] Codex 용 `.codex-plugin/` · `skills/` · `agents/` 디렉토리가 git 에 트래킹되지 않은 채로 Claude 마켓플레이스만 동작 — Codex 쪽 좀비 상태
-  - 영향: `pneumora/`, `ceo-dev-loop/`, `claude-md-harness/` 의 미추적 6개 경로
-  - 재발 방지: `git push` 직전 `git status --short` 결과에 `??` 로 시작하는 `plugin.json` · `SKILL.md` · `.codex-plugin/` 가 있으면 차단 (`/pneumora:check-deploy` 활용)
-
-- [2026-05-14] scripts/new-plugin.sh 가 Python 없는 환경에서 marketplace.json 자동 등록을 silent skip 하면서 exit 0 — 디렉토리는 생성됐는데 마켓플레이스에는 등록 안 된 좀비 플러그인 발생 가능
-  - 영향: `scripts/new-plugin.sh:258-266`
-  - 재발 방지: Python 부재 시 `exit 1` 로 강제 실패하거나 bash fallback 으로 marketplace 등록 보강
+컨텍스트가 요약된 정황이 보이면:
+1. `PROGRESS.md` 재독 — `## 활성 컨텍스트` 우선
+2. 그 지점부터 재개 (사용자에게 다시 묻지 않는다)
 
 ## Tech Stack
 
-- Bash 스캐폴딩 (`scripts/new-plugin.sh`) + Python 3 (marketplace.json 업데이트)
-- 메타데이터: JSON (`plugin.json`, `marketplace.json`)
-- 스킬 본문: Markdown + YAML 프론트매터 (`SKILL.md`)
-- 듀얼 타깃: Claude Code (`.claude-plugin/`) + Codex (`.codex-plugin/`, `.agents/plugins/`)
+Bash + Python 3 / JSON 매니페스트 / Markdown+YAML 스킬.
 
 ## Global Rules
 
-- 모든 플러그인은 듀얼 매니페스트 (`.claude-plugin/plugin.json` + `.codex-plugin/plugin.json`) 필수
-- SKILL.md `description` 프론트매터는 **한·영 트리거 키워드 병기** (자동 로드 정확도 ↑)
-- 회귀 발견 시 즉시 `/pneumora:log-regression` 으로 기록 후 작업 진행
-- 진행 상황은 PROGRESS.md 에, 규칙·구조는 CLAUDE.md 에 분리
+- 모든 플러그인은 듀얼 매니페스트 필수
+- SKILL.md `description` 은 한·영 트리거 키워드 병기
+- 회귀 발견 시 즉시 `/pneumora:log-regression` 기록 후 진행
+- 진행 상황 → `PROGRESS.md`, 규칙·구조 → 이 파일 (Codex 는 `AGENTS.md` — 함께 갱신)
 
 ## Directory Map
 
 | Path | Description |
 |------|-------------|
-| `scripts/new-plugin.sh` | 새 플러그인 스캐폴딩 (듀얼 매니페스트 + 두 marketplace 등록) |
-| `scripts/validate-plugins.sh` | 플러그인 무결성 검증 (버전 동기·JSON 파싱·좀비) — push 시 hook 자동 실행 |
-| `.claude-plugin/marketplace.json` | Claude Code 마켓플레이스 레지스트리 |
-| `.agents/plugins/marketplace.json` | Codex 마켓플레이스 레지스트리 |
-| `claude-md-harness/` | CLAUDE.md/AGENTS.md 하네스 구조화 스킬 |
-| `pneumora/` | CRITICAL · Regression Log · check-deploy 회귀 방지 스킬 묶음 |
-| `ceo-dev-loop/` | 목표 주도 자동화 루프 (Dev 구현 ↔ CEO/PM 체크포인트) |
-| `handoff/` | 작업 종료 핸드오프 자동화 (상태 수집·회귀 가드·harness 점검·docs 기록·HANDOFF.md 진입점) |
+| `scripts/new-plugin.sh` | 스캐폴딩 (듀얼 매니페스트 + marketplace 등록) |
+| `scripts/validate-plugins.sh` | 무결성 검증 (버전·JSON·좀비) |
+| `.claude-plugin/` · `.agents/plugins/` | 두 마켓플레이스 레지스트리 — 동시 갱신 |
+| `claude-md-harness/` | 하네스 구조화 스킬 |
+| `pneumora/` | CRITICAL·회귀 로그·배포 가드 |
+| `ceo-dev-loop/` | 목표 주도 자율 루프 (Dev ↔ CEO) |
+| `handoff/` | 작업 종료 핸드오프 자동화 |
 
 ## 참고
 
-- 플러그인 추가 절차 / 사용자 설치 가이드 → `README.md`
+회귀 이력 전문 → `docs/REGRESSIONS.md` / 설치·기여 → `README.md`

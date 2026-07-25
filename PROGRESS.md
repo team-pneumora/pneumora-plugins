@@ -1,7 +1,69 @@
 # PROGRESS
 
 > 세션 연속성용. 규칙·구조는 `CLAUDE.md` 참조.
-> 최종 업데이트: 2026-06-24
+> 최종 업데이트: 2026-07-25
+
+## 활성 컨텍스트
+
+<!-- auto-compact 후 여기부터 읽는다. 작업 중 매 턴 갱신. -->
+
+- **현재 만지는 파일**: (없음 — 2026-07-25 감사 후속 작업 완료)
+- **미해결 결정**: `scripts/new-plugin.sh` 의 heredoc 인젝션(CRITICAL #1) 미수정 — Python argv 경유 통일 필요
+- **다음 작업 첫 단계**: `/handoff` 로 이 레포 도그푸딩 → `docs/handoff/HANDOFF.md` 생성, 템플릿 검증
+- **커밋 상태**: 미커밋 (사용자 확인 대기)
+
+## 2026-07-25 세션 — 플러그인 감사 + 후속 수정 (ceo-dev-loop 0.8.0 / pneumora 0.3.0 / handoff 0.2.0)
+
+전체 감사 후 발견된 결함 5건 수정. 공통 성격: **안전장치가 조용히 무력화되는 유형** — 겉으로는 정상 동작으로 보여 발견이 늦었다.
+
+### ceo-dev-loop v0.7.0 → v0.8.0
+- **CEO 독립 검증**: `tools` 에 Bash 추가(`effort: high` 동반). 7-gate·5-시나리오·증거 체크박스가 전부 "Dev 자기 보고" 라는 같은 신뢰 가정 위에 있어 겹쳐도 두께가 안 늘던 문제. 완료 경계에서 CEO 가 검증 명령을 직접 재실행해 대조, 불일치 시 종료성 신호 차단. 8-gate 로 확장. 쓰기·커밋·배포는 금지 유지
+- **Stop hook 카운터 교정**: 진척과 무관한 단조 증가 → `docs/STATUS.md` mtime 을 진척 신호로 읽어 리셋. 200회가 "프로젝트 총 턴 상한" 이던 것을 "연속 무진척 200회" 로
+- **센티널 fail-open 수정**: 상대 경로 → `$CLAUDE_PROJECT_DIR` 앵커. cwd 가 하위 디렉토리면 루프 강제가 에러 없이 풀리던 문제
+- STATUS.md 120줄 압축 게이트 추가, `/status` 에 무진척 카운터 노출
+- 검증: 9개 시나리오 통과 (fail-open 회귀 재현 포함)
+
+### pneumora v0.2.0 → v0.3.0
+- README·marketplace 가 광고하던 `codebase-explorer` 를 실제로 동봉 (`agents/` 에 `.gitkeep` 뿐이었음). 개발 환경의 사용자 레벨 에이전트가 결함을 가리고 있었다
+- `scripts/validate-plugins.sh` 좀비 패턴에 `agents|commands|hooks` 추가 — 2026-05-14 회귀 B 의 원인이던 미추적 `agents/` 가 기존 패턴에 안 걸렸다
+
+### handoff v0.1.0 → v0.2.0
+- **0단계 신설**: `docs/.ceo-loop-active` 감지 시 센티널 삭제 + 재개 지점 확보. 루프 활성 중 핸드오프하면 Stop hook 이 종료를 차단하던 충돌
+- 기존 관례 존중 표 추가 (`DECISIONS.md`/`STATUS.md`/`PROGRESS.md` 가 있으면 거기 기록 — 경쟁 저장소 방지)
+- HANDOFF 템플릿에 브랜치·미커밋 상태·환경 전제·루프 재개 항목 추가
+- codex 매니페스트 스캐폴딩 잔재 정리 (description 3중복, 제네릭 defaultPrompt)
+
+### push 직전 적대적 리뷰 (24 에이전트 / 6차원 · 확정 7건, 기각 11건)
+공개 마켓플레이스로 나가는 변경이라 커밋 전에 6차원 리뷰 + 건별 독립 검증을 돌렸다. 확정 7건 전부 반영:
+
+- **[자체 유입 회귀] 안전밸브 도달 불가**: 연속 카운터만 두면 훅 자신이 리셋 조건을 유발해 밸브가 영원히 안 열린다 (실행 확인: 20/20턴 차단). `CEO_LOOP_MAX_TOTAL` 절대 상한 추가로 2중화 — 상세는 `docs/REGRESSIONS.md`
+- **좀비 검사 재설계**: 컴포넌트 디렉토리 나열식(`agents|commands|hooks`)은 `skills/*/scripts/` 를 놓치고 `.claude/hooks/` 를 오탐한다. "최상위 세그먼트가 플러그인 디렉토리인가" 로 교체 — 4개 케이스 실측 통과
+- **`CEO_LOOP_MAX_CONTINUES` 미검증**: 사용자가 타이핑하는 유일한 값인데 가드가 없어 `200회` 같은 입력에서 비교문이 에러 → 밸브 무력화. `case` 가드 추가
+- **AGENTS.md 에 CRITICAL #6 누락**: Codex 는 hook 을 실행하진 않지만 이 레포에서 hook 을 *작성*한다. 빠지면 방금 고친 fail-open 을 Codex 세션이 재생산
+- **handoff `skills/handoff/agents/openai.yaml` 스캐폴딩 잔재**: `.codex-plugin/plugin.json` 만 고치고 스킬 레벨 매니페스트를 빠뜨려 Codex 쪽 메타데이터가 서로 모순. PROGRESS 의 "잔재 정리" 주장도 반쪽이었음 → 수정
+- **`7-gate` 라벨 stale**: 항목이 8개인데 헤더·본문 4곳이 7-gate. ceo.md 현재 규칙은 8-gate 로, README 과거 changelog 는 유지
+
+기각 11건은 검증자가 코드를 직접 실행하거나 git baseline 과 대조해 반증 (예: "gate 8 을 건너뛸 수 있다" → 4개 근거로 반박, "응답 템플릿에 슬롯 없음" → 파일이 요구하는 출력은 모두 슬롯 존재).
+
+### 줄바꿈 (push 직전 발견)
+- **`.gitattributes` 신설** — `core.autocrlf=true` + `.gitattributes` 부재라 Windows clone 시 `.sh` 가 CRLF 로 체크아웃됨. 실측 결과 `validate-plugins.sh` 가 CRLF 에서 실존 파일을 "없음" 으로 보고하며 exit 1 (hook 2개는 CRLF 에서도 정상 — 하나만 깨져서 발견이 늦었다). 레포 워킹트리는 LF 라 로컬 재현 불가였음
+
+### 하네스
+- 루트 `CLAUDE.md` **1628 → 766 토큰** (예산 800). 회귀 이력 전문을 `docs/REGRESSIONS.md` 로 로테이션, CRITICAL 압축, Compact Recovery 앵커 신설, CRITICAL #6(`$CLAUDE_PROJECT_DIR` 앵커) 추가
+- **`AGENTS.md` 신설 (791 토큰)** — 듀얼 타깃인데 Codex 세션엔 CRITICAL 이 하나도 전달되지 않던 상태. Codex 는 hook 이 없으므로 "push 전 validate 수동 실행" 을 명시
+- `PROGRESS.md` 에 `## 활성 컨텍스트` 추가 (compact 생존 레이어)
+
+### 검증
+- `validate-plugins.sh` ✅ (4개 버전 동기, 좀비 없음, pre-push hook 모드 정상)
+- `harness-lint.sh` ✅ CLAUDE.md 766/800 · AGENTS.md 791/800, 경고 0
+- `bash -n` ✅ 수정한 스크립트 2개
+
+### 다음 후보
+- **`/handoff` 도그푸딩** — v0.2.0 이 아직 실전 0회. 이 레포에 돌려 `docs/handoff/HANDOFF.md` 생성하고 템플릿 검증
+- `new-plugin.sh` CRITICAL #1 (heredoc 인젝션) 미수정 — Python argv 경유로 통일
+- 커밋·push 미실행 (staged 상태) — push 시 `team-pneumora` 계정 확인 필요
+
+---
 
 ## 2026-06-24 세션 — 마켓플레이스 정리(7→3) + handoff 추가(→4)
 
