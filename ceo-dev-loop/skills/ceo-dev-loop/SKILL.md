@@ -33,7 +33,8 @@ This plugin was originally written for Claude Code slash commands and `@ceo` age
 - Promote recurring decision kinds (library choice, naming, error handling) to DECISIONS.md `## 정책`; apply matching policies without a CEO round-trip (fast-path) and log one line under `## 이력`.
 - Pre-authorized actions in GOAL.md `## 권한 (사전 위임)` run without user confirmation; everything else follows the exception list.
 - During `start`, read GOAL -> STATUS -> DECISIONS (policies and assumptions first) before changing code.
-- After each meaningful work unit, update `docs/STATUS.md` including one line of verification evidence (command + key output); a checkbox `[x]` without evidence does not count.
+- After each meaningful work unit, update `docs/STATUS.md` including verification evidence (command + key output); a checkbox `[x]` without evidence does not count.
+- At the completion boundary (`[SPRINT COMPLETE]` / `[DONE 후보]` / `[DONE]`), re-run the recorded verification commands and compare against what STATUS.md claims. A mismatch blocks the terminal signal and triggers rework. Do not re-run on ordinary turns.
 - CEO may issue 1-3 task packages per call; execute the whole package, but stop and call back on any fork, failure, or ambiguity.
 - `[DONE]` requires all required checkboxes and DoD items to be satisfied; phase or milestone completion is not enough.
 - Keep STATUS/DECISIONS restart-able every turn; context limits are handled by the host's built-in auto-compact — do not emit manual `/compact` or `/clear` signals.

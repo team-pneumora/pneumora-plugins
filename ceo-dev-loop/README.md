@@ -1,10 +1,11 @@
 # ceo-dev-loop
 
+> **v0.8.0** — 검증 신뢰성: CEO 독립 검증(완료 경계에서 검증 명령 직접 재실행), Stop hook 안전밸브 2중화(연속 무진척 + 누적 절대 상한), 센티널 경로 fail-open 수정, `effort: high`
 > **v0.7.0** — 자율성 강화: Stop hook 루프 강제(어휘 차단 → 하네스 강제), 가정 프로토콜(질문 → 기록된 가정), 정책 fast-path(선례 재사용), 권한 사전 위임, 작업 패키지, 증거 기반 체크박스
 
 Claude Code와 Codex에서 돌아가는 **CEO-Dev 자동화 루프** 플러그인.
 
-메인 세션이 Dev 역할로 코드를 작성하고, 체크포인트마다 CEO 서브에이전트(Sonnet, Read-only)가 검토·결정·승인합니다. 목표 달성까지 자동 반복되며, Max 구독 안에서 동작해 추가 API 비용이 없습니다.
+메인 세션이 Dev 역할로 코드를 작성하고, 체크포인트마다 CEO 서브에이전트(Sonnet, 읽기 + 검증 실행 전용)가 검토·결정·승인합니다. 목표 달성까지 자동 반복되며, Max 구독 안에서 동작해 추가 API 비용이 없습니다.
 
 기본 조합은 **Dev = Opus (메인 세션) / CEO = Sonnet (서브)** — Dev가 깊은 코딩을 맡고 CEO 는 빠르고 가볍게 방향성만 잡는 역할. (메인 세션 모델은 `claude` 실행 시점이나 `/model` 로 선택)
 
@@ -75,8 +76,8 @@ Dev(메인) → 코드 작성 → STATUS.md 갱신 → @ceo 호출
 ## 제공 요소
 
 - **명령어**: `/ceo-dev-loop:init`, `/ceo-dev-loop:start`, `/ceo-dev-loop:status`
-- **서브에이전트**: `@ceo` (Sonnet, Read/Grep/Glob 전용)
-- **Stop hook** (v0.7.0, Claude Code 전용): `hooks/loop-gate.sh` — `docs/.ceo-loop-active` 센티널 존재 중 턴 종료를 하네스 레벨에서 차단해 자율 루프를 강제
+- **서브에이전트**: `@ceo` (Sonnet, `effort: high`, Read/Grep/Glob + 검증 전용 Bash)
+- **Stop hook** (v0.8.0, Claude Code 전용): `hooks/loop-gate.sh` — `docs/.ceo-loop-active` 센티널 존재 중 턴 종료를 하네스 레벨에서 차단해 자율 루프를 강제. 안전밸브 2중 — 연속 무진척 200회(`CEO_LOOP_MAX_CONTINUES`, STATUS.md 갱신 시 리셋) 또는 누적 차단 1000회(`CEO_LOOP_MAX_TOTAL`, 리셋 없음)
 - **Codex 스킬**: `$ceo-dev-loop` (`docs/GOAL.md`, `docs/STATUS.md`, `docs/DECISIONS.md` 기반 — 센티널/hook 미사용, 프롬프트 규칙으로 대체)
 
 ## 비용 주의
@@ -98,17 +99,29 @@ claude
 - Dev 행동 규칙: `init` 이 생성한 `CLAUDE.md`
 - 호출 타이밍: `CLAUDE.md` 의 "@ceo 호출이 반드시 필요한 시점" 섹션
 
-### CEO 모델 변경
+### CEO 모델 / effort 변경
 
-현재 CEO 모델은 `agents/ceo.md` frontmatter (`model: sonnet`) 에 고정되어 있습니다. 다른 모델로 바꾸고 싶으면:
+`agents/ceo.md` frontmatter 에 `model: sonnet` + `effort: high` 로 지정돼 있습니다.
 
-- **프로젝트 단위 오버라이드 (권장)**: 프로젝트 루트에 `.claude/agents/ceo.md` 를 만들고 원하는 `model:` 값(`opus`, `sonnet`, `haiku`) 으로 작성. 플러그인 agent 보다 우선 적용됨 — 플러그인 업데이트에 영향받지 않음
+**`sonnet` 은 별칭이라 provider 의 최신 Sonnet 을 자동 추종합니다** — Anthropic API 기준 현재 Sonnet 5. 버전을 고정하려면 별칭 대신 full ID(`claude-sonnet-5`)를 쓰세요.
+
+| Provider | `sonnet` | `opus` |
+|---|---|---|
+| Anthropic API (Max 구독) | Sonnet 5 | Opus 5 |
+| Claude Platform on AWS | Sonnet 4.6 | Opus 5 |
+| Bedrock / Google Cloud | Sonnet 4.5 | Opus 5 |
+
+바꾸는 방법:
+
+- **프로젝트 단위 오버라이드 (권장)**: 프로젝트 루트에 `.claude/agents/ceo.md` 를 만들고 원하는 `model:` (`opus`, `sonnet`, `haiku`, `fable`, `best`, 또는 full ID) 로 작성. 플러그인 agent 보다 우선 적용됨 — 플러그인 업데이트에 영향받지 않음
 - **플러그인 직접 수정**: `agents/ceo.md` 편집 (단, 플러그인 업데이트 시 덮어쓰임)
 
 대표 조합:
 - `Dev=Opus / CEO=Sonnet` (기본) — 깊은 코딩 + 빠른 리뷰, Opus 쿼터 절약
 - `Dev=Sonnet / CEO=Opus` — 빠른 코딩 + 신중한 리뷰
 - `Dev=Opus / CEO=Haiku` — 최대 속도·최저 비용, 판단 품질은 낮아짐
+
+> `effort: high` 는 CEO 판단 품질을 **세션 effort 와 분리**하기 위한 것입니다. 이게 없으면 Dev 세션을 속도 위해 낮은 effort 로 돌릴 때 CEO 의 8-gate 판정·drift 감사 품질이 같이 떨어집니다. 비용이 부담되면 `medium` 으로 낮추되 `low` 는 권장하지 않습니다.
 
 ## 컨텍스트 관리 (v0.6.0 — auto-compact 위임)
 
@@ -133,7 +146,16 @@ v0.3.x ~ v0.4.x 가 어휘 블랙리스트로 [DONE] 회귀를 막던 것과 달
 
 - **`[GOAL drift]` 게이트 (v0.6.0 — 완료 경계 전용)** — STATUS/DECISIONS 의 완료 작업이 GOAL.md 체크박스에 매핑되는지 확인하는 full 감사를 **`[SPRINT COMPLETE]`/`[DONE 후보]` 발행 직전에만** 실행. 평상시 턴은 "이번 작업 GOAL 범위 안/밖" 한 줄 판정만 하고, 범위 밖 부수작업은 DECISIONS.md 에 기록(GOAL.md 안 건드림). GOAL.md 보강은 완료를 막는 in-scope 누락일 때만 → GOAL.md 가 다시 안정적 북극성으로 복귀.
 - **`[SPRINT COMPLETE]` / `[DONE]` 분리** — phase 완료와 프로젝트 완료를 다른 신호로. SPRINT COMPLETE 는 루프 계속, DONE 만 종료.
-- **`[DONE 후보]` 5-시나리오 검증** — 7-gate 통과 후 즉시 DONE 아님. 사용자가 산출물 받아 처음 시도할 5가지를 Dev 가 실제 실행 → 5/5 통과 시에만 진짜 DONE. GOAL.md drift 에 강한 외부 검증.
+- **`[DONE 후보]` 5-시나리오 검증** — 8-gate 통과 후 즉시 DONE 아님. 사용자가 산출물 받아 처음 시도할 5가지를 Dev 가 실제 실행 → 5/5 통과 시에만 진짜 DONE. GOAL.md drift 에 강한 외부 검증.
+
+## 기존 프로젝트 업그레이드 (v0.7.0 → v0.8.0)
+
+플러그인 파일(`agents/ceo.md`, `hooks/loop-gate.sh`, `commands/*`)은 매 호출 fresh 로 읽히므로 **자동 적용**됩니다. 프로젝트 산출물에 필요한 조치는 둘뿐:
+
+1. **`docs/.ceo-loop-active` 가 프로젝트 루트에 있는지 확인** — 하위 디렉토리에 있으면 hook 이 못 찾습니다. `/ceo-dev-loop:start` 로 재생성하면 정리됩니다
+2. **프로젝트 `CLAUDE.md`** 의 `Stop hook 강제` 항목에 한 줄 추가 (선택이지만 권장): "매 턴 `docs/STATUS.md` 갱신 — hook 이 진척 신호로 읽어 무진척 카운터를 리셋"
+
+기존 센티널 파일(`0` 단일 값)은 그대로 읽히므로 삭제·변환 불필요합니다.
 
 ## 기존 프로젝트 업그레이드 (v0.6.0 → v0.7.0)
 
@@ -182,6 +204,20 @@ v0.5.x 가 매 턴 흡수한 체크박스 중 "진짜 요구사항이 아닌 부
 → 위 1~2 를 한 번에 처리합니다. (턴 카운터 제거를 명시해야 빠짐없이 정리됩니다.)
 
 ## Changelog
+
+### v0.8.0 (검증 신뢰성 + 루프 강제 회귀 수정)
+v0.7.0 감사에서 드러난 두 결함을 고침. 둘 다 "안전장치가 조용히 무력화되는" 유형이라 겉으로는 정상 동작처럼 보였음.
+
+- **CEO 독립 검증 (`tools` 에 Bash 추가)**: v0.7.0 의 7-gate·5-시나리오·증거 기반 체크박스는 겹겹이 쌓였지만 **전부 같은 신뢰 가정(Dev 의 자기 보고) 위에 서 있었다.** CEO 는 `Read/Grep/Glob` 뿐이라 STATUS.md 에 적힌 "✅ 통과" 를 재현할 수단이 없었고, Dev 가 테스트를 돌리지 않고 통과라고 적으면 그대로 `[DONE]` 이 나갔다. v0.8.0 은 CEO 에게 **검증 전용 Bash** 를 주고 완료 경계(`[SPRINT COMPLETE]`/`[DONE 후보]`/`[DONE]`)에서 검증 명령을 직접 재실행해 Dev 보고와 대조한다. 불일치 시 종료성 신호 차단. 7-gate 는 8-gate 로 확장. 쓰기·커밋·배포는 여전히 금지 — 고치는 순간 검증자가 사라지므로 실패는 Dev 에게 되돌린다
+- **Stop hook 안전밸브 2중화**: v0.7.0 은 차단할 때마다 카운터를 올리기만 하고 진척 시 리셋하지 않아, 200회 한도가 무한 루프 backstop 이 아니라 **프로젝트 총 턴 상한**으로 동작했다 — 정상 진행 중인 장기 루프가 GOAL 미완 상태에서 조용히 멈춤. v0.8.0 은 `docs/STATUS.md` mtime 변화를 진척 신호로 읽어 리셋한다.
+  다만 **연속 카운터만 두면 안전밸브가 수학적으로 도달 불가능**해진다 — 이 훅 스스로 "매 턴 STATUS.md 를 갱신하라" 고 지시하므로 카운터는 1에 고정되고, STATUS.md 만 계속 고쳐쓰는 무의미 루프를 영원히 못 끊는다(push 직전 적대적 리뷰에서 실행으로 확인: 20/20턴 차단, 센티널 `[1 …]` 고정). 그래서 밸브를 둘로 나눴다:
+  - **연속 무진척** `CEO_LOOP_MAX_CONTINUES` (기본 200) — STATUS.md 갱신 시 0으로 리셋
+  - **누적 차단** `CEO_LOOP_MAX_TOTAL` (기본 1000) — **리셋 없는 절대 상한**
+  둘 중 하나라도 도달하면 정지 허용. 센티널은 `"<무진척> <mtime> <누적>"` 3필드가 되었고 구버전 1·2필드 형식도 그대로 읽힌다
+- **센티널 경로 fail-open 수정**: `SENTINEL="docs/.ceo-loop-active"` 가 cwd 기준이라 세션 cwd 가 하위 디렉토리면 센티널을 못 찾고 `exit 0` → 루프 강제가 에러 없이 풀렸다. `$CLAUDE_PROJECT_DIR` 로 앵커
+- **`effort: high`**: CEO 판단 품질을 세션 effort 에서 분리. 없으면 Dev 세션을 속도 위해 낮은 effort 로 돌릴 때 7-gate·drift 감사 품질이 같이 떨어짐
+- **STATUS.md 압축 게이트 추가**: DECISIONS 150줄에 이어 STATUS 120줄 초과 시 `docs/status-archive.md` 로 로테이션. CEO 는 매 호출 fresh 로 전부 재독하므로 파일 비대 = 호출당 토큰 비용
+- **`/ceo-dev-loop:status` 에 무진척 카운터 노출** — 루프가 헛도는지 사용자가 직접 확인 가능
 
 ### v0.7.0 (자율성 강화 — 개입 최소화 + 토큰 효율)
 "AI가 목표를 정확히 수행하고 스스로 결정해서 사용자 개입이 최소화되도록" 이라는 방향 아래, 루프 지속을 프롬프트 권고에서 하네스 강제로 격상하고, 사용자 질문을 비동기 검토로 전환.

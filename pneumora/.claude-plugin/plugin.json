@@ -1,7 +1,7 @@
 {
   "name": "pneumora",
   "description": "의도적 기억과 회귀 방지를 위한 워크플로우 도구 모음. CRITICAL 섹션 관리, 회귀 이력 추적 (5건 초과 시 자동 로테이션), 배포 전 체크 + git push 좀비 파일 자동 차단 hook, 코드베이스 탐색 전담 서브에이전트를 제공합니다.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Pneumora"
   },

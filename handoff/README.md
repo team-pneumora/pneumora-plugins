@@ -23,11 +23,14 @@ claude plugin install handoff@pneumora-plugins
 
 그러면 한 번의 입력으로 다음을 **끝까지 자동 진행**합니다(단계마다 묻지 않음):
 
-1. **상태 수집** — `git status`/`log`/`diff`, 미완료 표식 스캔
+0. **자율 루프 정지** — `docs/.ceo-loop-active` 가 있으면 센티널 삭제 + 재개 지점 확보 (ceo-dev-loop 병용 시)
+1. **상태 수집** — `git status`/`log`/`diff`, 브랜치·미커밋 상태, 미완료 표식 스캔
 2. **회귀 가드** — 미추적 좀비 파일 검사, 이번 작업 회귀를 `docs/regressions/`에 기록
 3. **harness 점검·보완** — CLAUDE.md/AGENTS.md 토큰 예산·계층 동기·Directory Map 점검 후 보완
 4. **체계적 기록** — `docs/sessions/`에 세션 로그, 필요 시 `docs/decisions/`에 ADR
 5. **HANDOFF 문서** — `docs/handoff/HANDOFF.md` 진입점 생성/갱신 (다음 작업자는 이 파일만 읽으면 됨)
+
+> 기존에 `docs/DECISIONS.md`·`docs/STATUS.md`·루트 `PROGRESS.md` 같은 관례가 있으면 **거기에 맞춰 기록**합니다 — 경쟁하는 두 번째 저장소를 만들지 않습니다.
 
 ### 산출물 구조
 

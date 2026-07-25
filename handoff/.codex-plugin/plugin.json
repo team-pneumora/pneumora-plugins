@@ -1,6 +1,6 @@
 {
   "name": "handoff",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
   "author": {
     "name": "Pneumora",
@@ -12,22 +12,27 @@
   "keywords": [
     "codex",
     "claude",
-    "handoff"
+    "handoff",
+    "session-closeout",
+    "documentation"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "handoff",
-    "shortDescription": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
-    "longDescription": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
+    "displayName": "Handoff",
+    "shortDescription": "Work-closeout automation for the next worker.",
+    "longDescription": "One trigger runs the whole closeout: capture git and build state, guard against regressions and untracked deploy files, lint and repair the CLAUDE.md/AGENTS.md harness, write structured records under docs/ (sessions, decisions, regressions), and produce a single docs/handoff/HANDOFF.md entry point the next person or agent reads first. Respects existing project conventions instead of imposing a new layout.",
     "developerName": "Pneumora",
     "category": "Productivity",
     "capabilities": [
       "Read",
-      "Write"
+      "Write",
+      "Shell"
     ],
     "websiteURL": "https://github.com/team-pneumora/pneumora-plugins",
     "defaultPrompt": [
-      "Use $handoff to help with this project."
+      "Use $handoff to wrap up this session and write a handoff for the next worker.",
+      "Use $handoff to capture what changed, record open issues, and refresh HANDOFF.md.",
+      "Use $handoff to check for regressions and untracked files before I stop working."
     ]
   }
 }
