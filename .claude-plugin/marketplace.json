@@ -22,7 +22,7 @@
     {
       "name": "handoff",
       "source": "./handoff",
-      "description": "작업 종료 시 다음 작업자 핸드오프 자동화 (v0.2.0) — 자율 루프 정지·상태 수집·회귀 가드·harness 점검·docs 체계적 기록·HANDOFF 진입점 생성. 기존 DECISIONS.md/STATUS.md/PROGRESS.md 관례가 있으면 그 자리에 기록."
+      "description": "작업 종료 시 다음 작업자 핸드오프 자동화 (v0.2.1) — 자율 루프 정지·상태 수집·회귀 가드·harness 점검·docs 체계적 기록·HANDOFF 진입점 생성. 기존 DECISIONS.md/STATUS.md/PROGRESS.md 관례가 있으면 그 자리에 기록."
     }
   ]
 }

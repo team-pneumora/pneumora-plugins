@@ -7,10 +7,11 @@
 
 <!-- auto-compact 후 여기부터 읽는다. 작업 중 매 턴 갱신. -->
 
-- **현재 만지는 파일**: (없음 — 2026-07-25 감사 후속 작업 완료)
-- **미해결 결정**: `scripts/new-plugin.sh` 의 heredoc 인젝션(CRITICAL #1) 미수정 — Python argv 경유 통일 필요
-- **다음 작업 첫 단계**: `/handoff` 로 이 레포 도그푸딩 → `docs/handoff/HANDOFF.md` 생성, 템플릿 검증
-- **커밋 상태**: 미커밋 (사용자 확인 대기)
+- **현재 만지는 파일**: (없음 — 2026-07-25 세션 완료)
+- **미해결 결정**: `claude-md-harness` 는 이번 감사 범위 밖이었음 (유일하게 버전 그대로 1.1.0) — 같은 수준으로 점검할지 판단 필요
+- **다음 작업 첫 단계**: `/plugin marketplace update pneumora-plugins` + `/reload-plugins` 로 캐시 갱신 후, 실제 프로젝트에서 `/ceo-dev-loop:init` 을 돌려 v0.8.0 루프를 실전 검증
+- **커밋 상태**: `a01bc75..a7d8d25` 푸시 완료. 핸드오프 커밋만 남음
+- **진입점**: `docs/handoff/HANDOFF.md`
 
 ## 2026-07-25 세션 — 플러그인 감사 + 후속 수정 (ceo-dev-loop 0.8.0 / pneumora 0.3.0 / handoff 0.2.0)
 
@@ -32,6 +33,14 @@
 - 기존 관례 존중 표 추가 (`DECISIONS.md`/`STATUS.md`/`PROGRESS.md` 가 있으면 거기 기록 — 경쟁 저장소 방지)
 - HANDOFF 템플릿에 브랜치·미커밋 상태·환경 전제·루프 재개 항목 추가
 - codex 매니페스트 스캐폴딩 잔재 정리 (description 3중복, 제네릭 defaultPrompt)
+
+### `/handoff` 도그푸딩 (v0.2.0 → 0.2.1) — 발견 2건
+플러그인 스킬 로더로 v0.2.0 을 호출했더니 **캐시의 v0.1.0 이 로드**됐다. 확인해보니 설치된 4개 플러그인이 전부 stale (ceo-dev-loop 0.7.0 / pneumora 0.2.0 / handoff 0.1.0). 절차는 레포 소스대로 수동 수행.
+
+- **[문서 오류] "플러그인 파일은 자동 적용" 이 틀렸다**: fresh 로 읽는 대상은 레포가 아니라 `~/.claude/plugins/cache/` 사본이고, 서드파티 마켓플레이스는 **auto-update 가 기본 꺼짐**. 그 안내를 따른 사용자는 v0.8.0 을 쓴다고 믿으며 v0.7.0 Stop hook 을 계속 돌린다. 두 README 에 `/plugin marketplace update` + `/reload-plugins` 0단계와 캐시 버전 확인법 추가 — 상세는 `docs/REGRESSIONS.md`
+- **[스킬 갭] 기존 관례 표에 `docs/REGRESSIONS.md` 누락**: 이 레포가 정확히 그 관례(pneumora 단일 파일 로테이션)를 쓰는데 표에 없어, 규칙대로면 `docs/regressions/` 를 새로 만들 뻔했다. 회귀 기록이 두 곳으로 갈리는 것이 이 표가 막으려는 상황 자체 → 행 추가 후 **0.2.1** bump
+- **검증된 것**: 기존 관례 존중 규칙이 실제로 작동 (`docs/sessions/` 대신 `PROGRESS.md` 에 기록), HANDOFF 템플릿의 신규 항목(브랜치·미커밋·환경 전제·루프 재개)이 실제로 채울 내용이 있음
+- **미검증**: 0단계(센티널 해제)는 이 레포에 센티널이 없어 no-op. **실제 루프 활성 상태에서는 아직 미검증**
 
 ### new-plugin.sh 하드닝 — CRITICAL #1·#5 해소 (2026-05-14 부터 미해결이던 건)
 - **인젝션 표면 5곳 제거**: `plugin.json` ×2 · `SKILL.md` 프론트매터 · `openai.yaml` · `README.md` 를 셸 heredoc 보간에서 빼고, 파일 생성 + 두 marketplace 등록 전체를 **단일 Python 블록**으로 이관. 값은 argv 로만 전달하고 JSON 은 `json.dumps`, YAML 은 JSON 문자열 문법(YAML 부분집합)으로 인코딩

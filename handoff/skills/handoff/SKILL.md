@@ -33,8 +33,11 @@ docs/
 |---|---|
 | `docs/DECISIONS.md` (ceo-dev-loop) | `## 이력` 에 추가. `docs/decisions/` 을 따로 만들지 않는다 |
 | `docs/STATUS.md` (ceo-dev-loop) | 세션 로그 요약을 여기 반영하고, `docs/sessions/` 는 상세 기록용으로만 |
+| `docs/REGRESSIONS.md` (pneumora 로테이션 형식) | 여기에 항목 추가. `docs/regressions/` 을 따로 만들지 않는다 |
 | 루트 `PROGRESS.md` | 세션 로그를 여기에 append |
 | `CHANGELOG.md` · `docs/adr/` 등 기존 관례 | 그 자리에 맞춰 기록 |
+
+한 프로젝트에 회귀 기록이 두 곳(`docs/REGRESSIONS.md` + `docs/regressions/`)으로 갈리면 다음 작업자가 둘 다 뒤져야 한다 — 이게 "경쟁 저장소" 로 피하려는 상황이다.
 
 `docs/handoff/HANDOFF.md` 진입점만은 항상 만든다 — 어떤 관례를 쓰든 "여기부터 읽으세요" 파일 하나는 필요하다.
 

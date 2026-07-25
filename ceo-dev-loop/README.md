@@ -150,7 +150,21 @@ v0.3.x ~ v0.4.x 가 어휘 블랙리스트로 [DONE] 회귀를 막던 것과 달
 
 ## 기존 프로젝트 업그레이드 (v0.7.0 → v0.8.0)
 
-플러그인 파일(`agents/ceo.md`, `hooks/loop-gate.sh`, `commands/*`)은 매 호출 fresh 로 읽히므로 **자동 적용**됩니다. 프로젝트 산출물에 필요한 조치는 둘뿐:
+### 0. 먼저 플러그인 자체를 갱신 (이거 안 하면 아무것도 안 바뀜)
+
+```
+/plugin marketplace update pneumora-plugins
+/reload-plugins
+```
+
+설치된 플러그인은 `~/.claude/plugins/cache/` 사본에서 로드됩니다. **서드파티 마켓플레이스는 auto-update 가 기본 꺼져 있어**, 레포에 새 버전을 올려도 위 두 명령 전에는 계속 옛 버전이 돕니다. `/plugin` → Marketplaces 탭에서 auto-update 를 켜두면 이후 세션부터 자동 갱신됩니다.
+
+> 확인법: `ls ~/.claude/plugins/cache/pneumora-plugins/ceo-dev-loop/` 가 `0.8.0` 을 보여야 합니다.
+> `0.7.0` 이면 Stop hook 도 옛 버전(단조 카운터 + 상대경로 fail-open)이 돌고 있는 것입니다.
+
+갱신 후에는 `agents/ceo.md` · `hooks/loop-gate.sh` · `commands/*` 가 매 호출 fresh 로 읽히므로 추가 조치가 필요 없습니다. 프로젝트 산출물만 손보면 됩니다.
+
+### 1. 프로젝트 산출물 (둘뿐)
 
 1. **`docs/.ceo-loop-active` 가 프로젝트 루트에 있는지 확인** — 하위 디렉토리에 있으면 hook 이 못 찾습니다. `/ceo-dev-loop:start` 로 재생성하면 정리됩니다
 2. **프로젝트 `CLAUDE.md`** 의 `Stop hook 강제` 항목에 한 줄 추가 (선택이지만 권장): "매 턴 `docs/STATUS.md` 갱신 — hook 이 진척 신호로 읽어 무진척 카운터를 리셋"

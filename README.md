@@ -28,7 +28,18 @@ Example:
 claude plugin install claude-md-harness@pneumora-plugins
 ```
 
-Restart Claude Code after installation and the skill will load automatically.
+Run `/reload-plugins` (or restart Claude Code) after installation and the skill loads.
+
+### Updating
+
+Installed plugins run from a cache under `~/.claude/plugins/cache/`, and **third-party marketplaces have auto-update disabled by default** — pushing a new version to this repository does not change what your session runs. To pick up a new version:
+
+```
+/plugin marketplace update pneumora-plugins
+/reload-plugins
+```
+
+Verify with `ls ~/.claude/plugins/cache/pneumora-plugins/<plugin>/`. To make this automatic, run `/plugin` → **Marketplaces** tab → **Enable auto-update**.
 
 ### Codex
 
