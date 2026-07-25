@@ -12,7 +12,7 @@
 
 - **영향**: `scripts/new-plugin.sh:75-122, 156-164, 167-192`
 - **재발 방지**: 스캐폴딩 스크립트에서 사용자 입력값을 매니페스트·YAML 에 박을 때 반드시 Python heredoc(argv 경유) 또는 `jq -Rs` 로 escape
-- **상태**: 미수정 — CRITICAL #1 로 승격, 향후 Python argv 경유로 통일 예정
+- **상태**: 해결 (2026-07-25) — 파일 생성·marketplace 등록 전체를 단일 Python 블록으로 이관, 값은 argv 로만 전달하고 JSON/YAML 은 `json.dumps` 로 인코딩. 적대적 입력 8종(큰따옴표·백슬래시·개행·명령치환·YAML 특수문자 등)으로 검증
 
 ### Codex 용 디렉토리가 git 에 미추적 — Codex 쪽 좀비 상태
 
@@ -28,7 +28,7 @@
 
 - **영향**: `scripts/new-plugin.sh:258-266`
 - **재발 방지**: Python 부재 시 `exit 1` 로 강제 실패하거나 bash fallback 으로 marketplace 등록 보강
-- **상태**: 미수정 — CRITICAL #5 로 승격
+- **상태**: 해결 (2026-07-25) — Python 3 를 전제조건으로 승격. 없으면 아무것도 생성하지 않고 `exit 1`, 생성 중 실패 시 디렉토리와 marketplace 를 원상 복구
 
 ## 2026-07-25
 

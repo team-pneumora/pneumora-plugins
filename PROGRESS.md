@@ -33,6 +33,13 @@
 - HANDOFF 템플릿에 브랜치·미커밋 상태·환경 전제·루프 재개 항목 추가
 - codex 매니페스트 스캐폴딩 잔재 정리 (description 3중복, 제네릭 defaultPrompt)
 
+### new-plugin.sh 하드닝 — CRITICAL #1·#5 해소 (2026-05-14 부터 미해결이던 건)
+- **인젝션 표면 5곳 제거**: `plugin.json` ×2 · `SKILL.md` 프론트매터 · `openai.yaml` · `README.md` 를 셸 heredoc 보간에서 빼고, 파일 생성 + 두 marketplace 등록 전체를 **단일 Python 블록**으로 이관. 값은 argv 로만 전달하고 JSON 은 `json.dumps`, YAML 은 JSON 문자열 문법(YAML 부분집합)으로 인코딩
+- **Python 3 를 전제조건으로 승격**: 없으면 **아무것도 생성하지 않고 exit 1**. 이전엔 경고만 찍고 exit 0 이라 "디렉토리는 있는데 marketplace 엔 없는" 좀비가 생길 수 있었다
+- **실패 시 롤백**: 생성 도중 예외가 나면 플러그인 디렉토리 삭제 + 두 marketplace 원상 복구
+- **cp949 콘솔 크래시 수정** (작업 중 발견): Python 이 한글·기호를 그대로 출력하면 한국어 Windows 콘솔에서 `UnicodeEncodeError` 로 죽는다. `set -e` 와 겹쳐 **정상 생성됐는데도 스크립트가 실패로 종료**했고, 에러 경로에서는 진짜 에러 대신 인코딩 트레이스백이 떴다. stdout/stderr 를 UTF-8 + `errors="replace"` 로 reconfigure
+- 검증: 적대적 입력 8종(큰따옴표·백슬래시·개행·명령치환·YAML 특수문자·이모지·공백만·셸 인젝션)을 실제 JSON/YAML 파서로 파싱 + 값 원본 보존까지 확인해 8/8 통과. **동일 입력에서 구버전은 JSON 2개·YAML 1개가 파싱 불가**로 재현됨. Python 부재·중복 이름·롤백 경로도 각각 확인
+
 ### push 직전 적대적 리뷰 (24 에이전트 / 6차원 · 확정 7건, 기각 11건)
 공개 마켓플레이스로 나가는 변경이라 커밋 전에 6차원 리뷰 + 건별 독립 검증을 돌렸다. 확정 7건 전부 반영:
 

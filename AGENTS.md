@@ -4,12 +4,12 @@
 
 ## ⚠️ CRITICAL
 
-1. **스캐폴딩 스크립트에 사용자 입력을 heredoc 직접 삽입 금지** — Python heredoc(argv) 또는 `jq -Rs` escape 경유. `scripts/new-plugin.sh:75-122,156-164,167-192`
+1. **사용자 입력을 셸 heredoc 에 직접 박지 말 것** — JSON/YAML 이 깨진다. Python argv 경유 + `json.dumps` 인코딩 (`scripts/new-plugin.sh` 참고)
 2. **버전은 `.claude-plugin` ↔ `.codex-plugin` ↔ 두 marketplace.json 을 한 커밋에 동시 bump** — 한쪽만 올리면 Codex 가 stale 서빙
 3. **미추적 `plugin.json` / `SKILL.md` / `.codex-plugin/` 있으면 push 금지** — Codex 좀비 상태
 4. **새 플러그인은 반드시 `scripts/new-plugin.sh` 경유** — 수동 편집은 marketplace 한쪽만 갱신되는 회귀 원인
-5. **Python 없는 환경에서 `new-plugin.sh` 금지** — marketplace 등록이 silent skip (`:258-266`)
-6. **hook 스크립트는 프로젝트 파일을 `$CLAUDE_PROJECT_DIR` 로 앵커** — 상대 경로 + "없으면 통과" 는 안전장치를 조용히 끄는 패턴 (Codex 는 hook 을 실행하진 않지만 *작성*한다)
+5. **hook 스크립트는 프로젝트 파일을 `$CLAUDE_PROJECT_DIR` 로 앵커** — 상대 경로 + "없으면 통과" 는 안전장치를 조용히 끄는 패턴 (Codex 도 hook 을 *작성*한다)
+6. **안전장치가 자기 리셋 조건을 스스로 유발하지 않는지 확인** — 리셋 카운터 + 리셋 없는 절대 상한을 쌍으로
 
 > **Codex 에는 PreToolUse hook 이 없어 2·3 이 자동 차단되지 않는다.**
 > push 전 `bash scripts/validate-plugins.sh` 직접 실행 — Codex 의 유일한 방어선.
