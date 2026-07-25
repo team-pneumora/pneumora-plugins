@@ -94,7 +94,26 @@ done
 
 # ── 4. 미추적 좀비 파일 ──
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  ZOMBIES="$(git status --porcelain -uall 2>/dev/null | grep -E '^\?\?' | grep -E '(plugin\.json|SKILL\.md|\.codex-plugin)' || true)"
+  # 컴포넌트 디렉토리 이름을 나열하지 않는다 — 나열식은 (a) skills/*/scripts/ 같은
+  # 새 컴포넌트를 놓치고 (b) .claude/hooks/ 처럼 플러그인이 아닌 경로를 오탐한다.
+  # 대신 "최상위 세그먼트가 플러그인 디렉토리(.claude-plugin/plugin.json 보유)인가" 로 판정.
+  # (2026-05-14 회귀 B 의 원인이었던 미추적 agents/ 도 이 규칙에 걸린다)
+  ZOMBIES=""
+  UNTRACKED="$(git status --porcelain -uall 2>/dev/null | grep -E '^\?\?' || true)"
+  while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    p="${line#\?\? }"
+    p="${p#\"}"; p="${p%\"}"        # 특수문자 경로는 git 이 큰따옴표로 감싼다
+    top="${p%%/*}"
+    if [ -f "$top/.claude-plugin/plugin.json" ] \
+       || [ "$p" = "$CLAUDE_MARKET" ] || [ "$p" = "$AGENTS_MARKET" ] \
+       || printf '%s' "$p" | grep -Eq '(plugin\.json|SKILL\.md|\.codex-plugin)'; then
+      ZOMBIES="${ZOMBIES}${line}
+"
+    fi
+  done <<EOF
+$UNTRACKED
+EOF
   if [ -n "$ZOMBIES" ]; then
     fail "미추적 배포 필수 파일 (CRITICAL #3):"
     echo "$ZOMBIES" >&2
