@@ -29,20 +29,21 @@
 
 ## 🔜 다음 단계 (바로 착수)
 
-1. **플러그인 캐시 갱신 후 실사용 검증** — 아래 ⚠️ 1번이 선행 조건. 갱신 뒤 실제 프로젝트에서 `/ceo-dev-loop:init` 을 돌려 v0.8.0 의 CEO 독립 검증과 2중 안전밸브가 실전에서 어떻게 동작하는지 관찰. 지금까지 검증은 전부 스크립트 단위 실측이고 **루프 전체를 실제로 돌려본 적은 없음**
-2. **`/handoff` 를 갱신된 v0.2.1 로 재실행** — 이번 도그푸딩은 캐시가 v0.1.0 이라 스킬 로더를 통한 검증이 불가능했고, 절차를 레포 소스대로 수동 수행했습니다. 0단계(센티널 해제)는 이 레포에 센티널이 없어 no-op 이었으므로 **실제 루프 활성 상태에서 미검증**
-3. `claude-md-harness` 는 이번 감사에서 손대지 않았음 — 유일하게 버전이 그대로(1.1.0). 같은 수준으로 점검할지 판단 필요
+1. **실제 프로젝트에서 루프 1회 완주** — 목표가 있는 프로젝트에서 `cd` 후 `claude` → `/ceo-dev-loop:init "목표"`. 지금까지 검증은 스크립트 단위 실측 + Stop hook 실전 확인까지이고, **`init` → `[DONE]` 전체 사이클(CEO 독립 검증·8-gate·5-시나리오)은 아직 안 돌려봤음**. Stop hook 은 세션의 프로젝트 디렉토리에만 걸리므로 이 레포에서는 대신 검증할 수 없음
+2. `claude-md-harness` 는 이번 감사에서 손대지 않았음 — 유일하게 버전이 그대로(1.1.0). 같은 수준으로 점검할지 판단 필요
 
 ## ⚠️ 회귀 주의 / 함정
 
 1. **설치된 플러그인은 캐시에서 돈다. 레포에 푸시해도 세션은 안 바뀐다.**
    서드파티 마켓플레이스는 auto-update 가 **기본 꺼짐**입니다.
    ```
-   /plugin marketplace update pneumora-plugins
-   /reload-plugins
+   claude plugin marketplace update pneumora-plugins   # 또는 /plugin marketplace update ...
+   claude plugin update ceo-dev-loop@pneumora-plugins  # 플러그인별로
+   /reload-plugins                                     # 세션 반영 (인세션 전용)
    ```
    확인: `ls ~/.claude/plugins/cache/pneumora-plugins/ceo-dev-loop/` → `0.8.0` 이어야 함.
-   **이 세션 종료 시점 기준 캐시는 아직 stale** (ceo-dev-loop 0.7.0 / pneumora 0.2.0 / handoff 0.1.0).
+   CLI 갱신은 디스크만 바꾸고, 세션 반영은 `/reload-plugins` 또는 재시작이 필요합니다.
+   `/plugin` → Marketplaces 탭에서 auto-update 를 켜두면 이후엔 자동입니다.
 
 2. **`docs/.ceo-loop-active` 를 남긴 채 세션을 끝내지 말 것** — Stop hook 이 턴 종료를 계속 차단합니다. 정당한 정지는 셋뿐(`[DONE]` / 사용자 확인 필수 예외 / 중단 지시). 이 레포는 루프를 쓰지 않아 센티널이 없습니다.
 

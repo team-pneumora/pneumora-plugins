@@ -40,7 +40,18 @@
 - **[문서 오류] "플러그인 파일은 자동 적용" 이 틀렸다**: fresh 로 읽는 대상은 레포가 아니라 `~/.claude/plugins/cache/` 사본이고, 서드파티 마켓플레이스는 **auto-update 가 기본 꺼짐**. 그 안내를 따른 사용자는 v0.8.0 을 쓴다고 믿으며 v0.7.0 Stop hook 을 계속 돌린다. 두 README 에 `/plugin marketplace update` + `/reload-plugins` 0단계와 캐시 버전 확인법 추가 — 상세는 `docs/REGRESSIONS.md`
 - **[스킬 갭] 기존 관례 표에 `docs/REGRESSIONS.md` 누락**: 이 레포가 정확히 그 관례(pneumora 단일 파일 로테이션)를 쓰는데 표에 없어, 규칙대로면 `docs/regressions/` 를 새로 만들 뻔했다. 회귀 기록이 두 곳으로 갈리는 것이 이 표가 막으려는 상황 자체 → 행 추가 후 **0.2.1** bump
 - **검증된 것**: 기존 관례 존중 규칙이 실제로 작동 (`docs/sessions/` 대신 `PROGRESS.md` 에 기록), HANDOFF 템플릿의 신규 항목(브랜치·미커밋·환경 전제·루프 재개)이 실제로 채울 내용이 있음
-- **미검증**: 0단계(센티널 해제)는 이 레포에 센티널이 없어 no-op. **실제 루프 활성 상태에서는 아직 미검증**
+
+### Stop hook 실전 검증 (캐시 갱신 후)
+`claude plugin marketplace update` + `claude plugin update` ×3 → `/reload-plugins` 로 0.8.0/0.3.0/0.2.1 반영. `pneumora:codebase-explorer` 가 새 에이전트로 등장한 것이 0.3.0 로드의 직접 증거.
+
+센티널(`docs/.ceo-loop-active`)을 심고 턴을 의도적으로 종료해 **훅이 실제로 발동하는 것을 확인**:
+
+- 차단 메시지가 `무진척 0/200, 누적 0/1000` — **2중 밸브 표기**. v0.7.0 이면 단일 카운터만 나옴
+- 메시지의 센티널 경로가 **절대경로** — `$CLAUDE_PROJECT_DIR` 앵커 작동. v0.7.0 이면 상대경로
+- 훅이 쓴 센티널 내용 `1 0 1` — 3필드 형식, 양쪽 카운터 +1, `STATUS.md` 부재로 mtime=0
+- handoff 0단계대로 중단 사유 ③ 판정 후 삭제 → 훅 exit 0, 워킹트리 잔여물 0
+
+즉 **등록·경로 앵커·2중 카운터·센티널 해제 경로가 실환경에서 확인됨**. 남은 미검증은 `init` → `[DONE]` 전체 사이클뿐 (Stop hook 이 세션의 프로젝트 디렉토리에만 걸려 이 레포에서는 대신 검증 불가).
 
 ### new-plugin.sh 하드닝 — CRITICAL #1·#5 해소 (2026-05-14 부터 미해결이던 건)
 - **인젝션 표면 5곳 제거**: `plugin.json` ×2 · `SKILL.md` 프론트매터 · `openai.yaml` · `README.md` 를 셸 heredoc 보간에서 빼고, 파일 생성 + 두 marketplace 등록 전체를 **단일 Python 블록**으로 이관. 값은 argv 로만 전달하고 JSON 은 `json.dumps`, YAML 은 JSON 문자열 문법(YAML 부분집합)으로 인코딩

@@ -2,6 +2,9 @@
 .claude/*
 !.claude/settings.json
 
+# ceo-dev-loop 루프 센티널 (로컬 상태 — 커밋 금지)
+docs/.ceo-loop-active
+
 # OS
 .DS_Store
 Thumbs.db
