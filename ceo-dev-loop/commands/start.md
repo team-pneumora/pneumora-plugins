@@ -8,7 +8,7 @@ description: CEO-Dev 자동 루프를 시작합니다. GOAL.md 기반으로 작�
 1. `docs/GOAL.md`가 있는지 확인 — 없으면 `/ceo-dev-loop:init` 먼저 실행하라고 안내
 2. `docs/GOAL.md`의 "필수 요구사항" 섹션이 비어있으면 사용자에게 작성 요청
 
-## 루프 시작 (ceo-dev-loop v0.8.0)
+## 루프 시작 (ceo-dev-loop v0.9.0)
 
 1. **루프 센티널 생성/리셋**: **프로젝트 루트에서** `echo 0 > docs/.ceo-loop-active` (Stop hook 활성화 + 무진척 카운터 리셋. `.gitignore` 에 없으면 추가). 하위 디렉토리에 만들면 hook 이 찾지 못해 루프 강제가 걸리지 않는다
 2. `docs/GOAL.md`, `docs/STATUS.md`, `docs/DECISIONS.md` (있으면) 전부 읽기 — DECISIONS 는 `## 정책` 과 `## 가정` 먼저
@@ -44,3 +44,6 @@ description: CEO-Dev 자동 루프를 시작합니다. GOAL.md 기반으로 작�
 - drift 검사는 완료 경계(`[SPRINT COMPLETE]`/`[DONE 후보]`) 전용 — 평상시 범위 밖 작업은 DECISIONS.md 기록, GOAL.md 보강은 완료를 막는 in-scope 누락일 때만
 - Stop hook 차단 메시지를 받으면: GOAL 미완료 → 즉시 계속, 정당한 정지(3경우) → 센티널 삭제 후 종료
 - **매 턴 `docs/STATUS.md` 갱신 필수** — hook 이 이걸 진척 신호로 읽어 무진척 카운터를 리셋한다. 갱신을 빠뜨리면 실제로 진행 중이어도 무진척으로 집계된다
+- 서브에이전트는 `@ceo` 하나만 — 검증·재확인용 추가 에이전트 금지, `docs/` 3파일 쓰기는 항상 메인 세션 (CLAUDE.md "실행 밀도 규약")
+- CEO 지시 수행 후 스스로 재검증 라운드를 추가하지 않는다 — 검증 명령 1회 → 출력 그대로 STATUS.md → `@ceo`
+- 사용자 보고는 얇게: 턴 시작 한 문장 → 작업 → 결과 한 줄. 전체 요약은 `[DONE]` 보고에서만

@@ -40,3 +40,12 @@ This plugin was originally written for Claude Code slash commands and `@ceo` age
 - Keep STATUS/DECISIONS restart-able every turn; context limits are handled by the host's built-in auto-compact — do not emit manual `/compact` or `/clear` signals.
 - Run the GOAL drift audit only at the `[SPRINT COMPLETE]` / `[DONE 후보]` completion boundary, not every turn. Mid-loop, log out-of-scope work to DECISIONS.md; edit GOAL.md only for an in-scope gap that blocks completion.
 - Loop enforcement sentinel (`docs/.ceo-loop-active`) and the Stop hook are **Claude Code only**. In Codex, rely on the prompt rules above and do not create the sentinel; never end a turn waiting for the user unless the goal is done or a genuine exception applies.
+
+## Execution Density
+
+The loop runs for many turns without user input, so per-turn overhead compounds. Keep it thin:
+
+- **The CEO review is the only delegation.** Do not spawn extra subagents to verify, double-check, or re-review work — that role belongs to the CEO. The one exception is a wide multi-file investigation, and even then the main session owns all writes to `docs/GOAL.md`, `docs/STATUS.md`, and `docs/DECISIONS.md`; parallel writers corrupt the handoff state.
+- **Do not add a self-verification round after carrying out a CEO instruction.** Run the verification command once, record the command and its output in STATUS.md, and call the CEO. Cross-checking that report is the CEO's job at the completion boundary.
+- **Write the handoff files inside their budget from the start** (STATUS.md ≤ 120 lines, DECISIONS.md ≤ 150 lines). One item per line; record only the output needed to justify the verdict, never a full log dump; never re-summarize earlier turns. The CEO re-reads all three files on every call, so their length is the loop's recurring cost.
+- **Keep user-facing narration thin.** One sentence on what you are about to do, then work, then one line on the outcome. Interim updates only when the direction changes or something important surfaces. Save the full summary for the final `[DONE]` report.

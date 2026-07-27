@@ -1,6 +1,6 @@
 {
   "name": "handoff",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "작업 종료 시 다음 작업자 핸드오프 자동화 — docs 체계적 기록·회귀 가드·harness 점검·HANDOFF 문서 생성",
   "author": {
     "name": "Pneumora",

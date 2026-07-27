@@ -7,7 +7,7 @@ description: 현재 프로젝트의 루프 진행 상태와 결정 로그를 요
 
 ```
 📋 프로젝트: (GOAL.md 첫 줄)
-🔁 ceo-dev-loop v0.8.0  (루프: 활성 | 비활성 — docs/.ceo-loop-active 존재 여부)
+🔁 ceo-dev-loop v0.9.0  (루프: 활성 | 비활성 — docs/.ceo-loop-active 존재 여부)
    안전밸브: 무진척 N/200 · 누적 M/1000  (센티널 = "무진척 mtime 누적". 무진척이 계속 오르면 STATUS.md 미갱신, 누적이 상한에 가까우면 루프가 비정상적으로 김)
 
 ✅ 완료된 요구사항: N / M 개

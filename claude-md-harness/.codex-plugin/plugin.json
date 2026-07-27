@@ -1,6 +1,6 @@
 {
   "name": "claude-md-harness",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Instruction-file harness for splitting CLAUDE.md or AGENTS.md into an OOP-style Root -> Module -> Leaf structure, with token-budget placement, compact-survival anchors, and a bundled lint script.",
   "author": {
     "name": "Pneumora",

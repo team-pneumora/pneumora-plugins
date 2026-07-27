@@ -40,3 +40,6 @@ When applying a command file that says `CLAUDE.md`, treat it as `CLAUDE.md or AG
 - For regression logging, ask at most two follow-up questions: affected area and prevention condition.
 - Use the current date in `YYYY-MM-DD` format for new regression entries.
 - Keep edits scoped to one chosen instruction file; do not duplicate the same regression across multiple files.
+- Run these workflows in the current session. Do not spawn a subagent for them — each is a handful of reads plus one edit, and delegating costs more than doing it.
+- **Report, do not repair.** These commands surface project memory and git state; they never fix what they find (no `git add` for untracked deploy files, no version-mismatch edits, no root-causing a logged regression). The user decides what to do with the report.
+- Output only what the command file's format specifies. No preamble, no closing summary, no "let me know if you'd like me to…" offer.

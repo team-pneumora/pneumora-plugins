@@ -1,7 +1,7 @@
 {
   "name": "claude-md-harness",
   "description": "CLAUDE.md/AGENTS.md를 객체지향 하네스 구조로 분산시키는 플러그인. 토큰 예산 기반 배치 + compact 생존 설계 + lint 재감사. OOP 상속 모델처럼 Root → Module → Leaf로 계층화합니다.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Pneumora"
   },
